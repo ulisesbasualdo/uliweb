@@ -1,1 +1,93 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales de la aplicación */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap');
+
+/* Reseteo básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Variables de color para mantener consistencia */
+:root {
+  --color-fondo: #121212;
+  --color-fondo-secundario: #1e1e1e;
+  --color-fondo-terciario: #2d2d2d;
+  --color-primario: #9c27b0;
+  --color-primario-oscuro: #7b1fa2;
+  --color-texto: #ffffff;
+  --color-texto-secundario: #b3b3b3;
+  --color-borde: #333333;
+  --sombra-elemento: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --transicion-base: all 0.3s ease;
+}
+
+/* Estilos de accesibilidad */
+:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos de elementos comunes */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--color-primario);
+  text-decoration: none;
+  transition: var(--transicion-base);
+}
+
+a:hover {
+  color: var(--color-primario-oscuro);
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Utilidades */
+.texto-centro {
+  text-align: center;
+}
+
+.contenedor {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.animacion-entrada {
+  animation: fadeIn 0.5s ease-out, slideUp 0.5s ease-out;
+}
