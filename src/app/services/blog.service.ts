@@ -1,3 +1,4 @@
+import { httpResource } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -7,7 +8,9 @@ export class BlogService {
 
   constructor() { }
 
-  getBlog(): string {
-    return 'soy el blog';
-  }
+  blog = httpResource(() =>('/blog.json'));
+
+
+
+
 }

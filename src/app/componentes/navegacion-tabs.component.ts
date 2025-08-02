@@ -1,5 +1,5 @@
 import { Component, signal, ElementRef, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { animate, style, transition, trigger } from '@angular/animations';
 
 type TipoTab = 'inicio' | 'sobreMi' | 'servicios' | 'contacto';
@@ -12,7 +12,7 @@ interface Tab {
 @Component({
   selector: 'app-navegacion-tabs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="tabs">
       <div class="encabezados-tabs" #tabsContainer>
