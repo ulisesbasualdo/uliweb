@@ -33,8 +33,8 @@ import { ImagenPosteoComponent } from './componentes/imagen-posteo.component';
         <app-perfil-usuario
           urlImagenPerfil="https://picsum.photos/200"
           textoAlternativoPerfil="Mi foto de perfil"
-          nombre="Mi Nombre"
-          descripcion="Desarrollador web especializado en crear experiencias digitales minimalistas y funcionales">
+          nombre="Uli B."
+          descripcion="Desarrollador web especializado en Angular">
         </app-perfil-usuario>
       </section>
 
@@ -44,7 +44,7 @@ import { ImagenPosteoComponent } from './componentes/imagen-posteo.component';
       <!-- Sección de tabs -->
       <app-navegacion-tabs>
         <!-- Contenido de la sección de inicio -->
-        <div seccion="inicio">
+        <!-- <div seccion="inicio">
           <div class="posteo">
             <div class="encabezado-posteo">
               <img src="https://picsum.photos/50" alt="Avatar" class="avatar-posteo">
@@ -80,7 +80,7 @@ import { ImagenPosteoComponent } from './componentes/imagen-posteo.component';
               </app-imagen-posteo>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Contenido de la sección sobre mí -->
         <div seccion="sobreMi">

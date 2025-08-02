@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { ImagenService } from '../servicios/imagen.service';
+import { ImagenService } from '../services/imagen.service';
 import { SkeletonComponent } from './skeleton.component';
 
 @Component({

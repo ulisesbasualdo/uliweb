@@ -17,14 +17,15 @@ interface Tab {
     <section class="tabs">
       <div class="encabezados-tabs" #tabsContainer>
         <div class="indicador-tab" [style.transform]="indicadorTransform()"></div>
+        @for( tab of tabs; track tab.id; let i = $index) {
         <button
-          *ngFor="let tab of tabs; let i = index"
           class="tab"
           [class.activo]="tabActiva() === tab.id"
           (click)="cambiarTab(tab.id, i)"
           #tabButton>
           {{ tab.nombre }}
         </button>
+        }
       </div>
 
       <div class="contenido-tab">
