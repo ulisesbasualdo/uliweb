@@ -1,0 +1,21 @@
+.contenedor-portada {
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  min-height: 200px;
+}
+
+.imagen-portada {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition:
+    transform 0.5s ease,
+    opacity 0.3s ease;
+  image-rendering: pixelated;
+}
+
+.imagen-portada:hover {
+  transform: scale(1.03);
+}

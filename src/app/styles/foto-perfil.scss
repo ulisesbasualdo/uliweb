@@ -1,0 +1,64 @@
+.circulo-perfil-contenedor {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.circulo-perfil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #121212;
+  background: #121212;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.circulo-perfil.oculto {
+  opacity: 0;
+}
+
+.circulo-perfil:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(156, 39, 176, 0.5);
+}
+
+.circulo-perfil img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin-top: -5rem;
+}
+
+.nombre {
+  margin: 1rem 0 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.nombre:hover {
+  color: #9c27b0;
+}
+
+.descripcion {
+  font-size: 1.1rem;
+  color: #b3b3b3;
+  max-width: 500px;
+  line-height: 1.6;
+}

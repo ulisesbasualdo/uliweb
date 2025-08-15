@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  background-color: #121212;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+.contenedor-principal {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Estilos de portada */
+.portada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .contenedor-principal {
+    padding: 0 0.5rem;
+  }
+}
