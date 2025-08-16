@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit    } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BlogService } from './services/blog.service';
 import { DatePipe, NgComponentOutlet } from '@angular/common';
 
@@ -6,28 +6,7 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
   selector: 'app-blog',
   imports: [NgComponentOutlet, DatePipe],
   template: `
-    <div class="debug-info">
-      <h3>🔧 Debug Info</h3>
-      <p>Loading: {{ blogService.loading() }}</p>
-      <p>Total entries: {{ blogService.allEntries().length }}</p>
-      <p>Categories: {{ blogService.categories().length }}</p>
-      <p>Categories list: {{ blogService.categories().join(', ') }}</p>
-      @if (blogService.loadingError()) {
-        <p class="error">Error: {{ blogService.loadingError() }}</p>
-      }
-    </div>
-
-    @if (blogService.loading()) {
-      <div class="estado-carga">
-        <h2>🚀 Cargando entradas de blog automáticamente...</h2>
-        <p>Descubriendo componentes en blog-entries...</p>
-      </div>
-    } @else if (blogService.loadingError()) {
-      <div class="estado-error">
-        <h2>❌ Error al cargar entradas</h2>
-        <p>{{ blogService.loadingError() }}</p>
-      </div>
-    } @else if (blogService.categories().length === 0) {
+    @if (blogService.categories().length === 0) {
       <div class="estado-vacio">
         <h2>No hay entradas de blog disponibles</h2>
         <p>Agrega componentes con el decorador @BlogEntry para verlos aquí.</p>
@@ -35,7 +14,7 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
     } @else {
       @for (category of blogService.categories(); track category) {
         <section class="categoria-seccion">
-          <h2 class="categoria-titulo">{{ category }}</h2>
+          <!-- <h2 class="categoria-titulo">{{ category }}</h2> -->
 
           @for (entry of blogService.getEntriesByCategory(category ?? ''); track entry.id) {
             <div class="posteo">
@@ -175,10 +154,6 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogComponent implements OnInit {
+export class BlogComponent {
   protected readonly blogService = inject(BlogService);
-  ngOnInit(): void {
-    this.blogService.loadBlog();
-  }
-
 }
