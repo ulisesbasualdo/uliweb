@@ -26,7 +26,7 @@ async function generateBlogIndex() {
       // Crear ruta relativa correcta SIN la extensión .ts
       const relativePath = './' + file.replace(/\\/g, '/').replace('.component.ts', '.component');
 
-      imports += `import ${componentName} from '${relativePath}';\n`;
+      imports += `import {${componentName}} from '${relativePath}';\n`;
       componentNames.push(componentName);
 
       console.log(`✅ Agregado: ${componentName}`);

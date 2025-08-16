@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {VsCodeEmojisComponent} from './vs-code-emojis.component';
+import { PepeArgentoComponent } from './pepe-argento.component';
 
-describe('VsCodeEmojisComponent', () => {
-  let component: VsCodeEmojisComponent;
-  let fixture: ComponentFixture<VsCodeEmojisComponent>;
+describe('PepeArgentoComponent', () => {
+  let component: PepeArgentoComponent;
+  let fixture: ComponentFixture<PepeArgentoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VsCodeEmojisComponent]
+      imports: [PepeArgentoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VsCodeEmojisComponent);
+    fixture = TestBed.createComponent(PepeArgentoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

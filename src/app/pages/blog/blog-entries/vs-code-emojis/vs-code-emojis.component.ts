@@ -16,4 +16,4 @@ import { BlogEntry } from '../../decorators/blog-entry.decorator';
   `,
   styles: ``
 })
-export default class VsCodeEmojisComponent {}
+export class VsCodeEmojisComponent {}

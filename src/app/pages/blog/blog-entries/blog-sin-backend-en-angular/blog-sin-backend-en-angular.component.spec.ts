@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import BlogSinBackendEnAngularComponent from './blog-sin-backend-en-angular.component';
+import {BlogSinBackendEnAngularComponent} from './blog-sin-backend-en-angular.component';
 
 describe('BlogSinBackendEnAngularComponent', () => {
   let component: BlogSinBackendEnAngularComponent;

@@ -48,7 +48,7 @@ import { BlogEntry } from '../../decorators/blog-entry.decorator';
   ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class $className {
+export class $className {
 
 }
 "@

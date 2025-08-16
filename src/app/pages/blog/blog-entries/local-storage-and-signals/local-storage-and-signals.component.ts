@@ -37,4 +37,4 @@ import { BlogEntry } from '../../decorators/blog-entry.decorator';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class LocalStorageAndSignalsComponent {}
+export class LocalStorageAndSignalsComponent {}

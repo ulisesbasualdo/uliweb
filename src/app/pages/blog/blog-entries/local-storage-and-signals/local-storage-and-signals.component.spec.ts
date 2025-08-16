@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import LocalStorageAndSignalsComponent from './local-storage-and-signals.component';
+import {LocalStorageAndSignalsComponent} from './local-storage-and-signals.component';
 
 describe('LocalStorageAndSignalsComponent', () => {
   let component: LocalStorageAndSignalsComponent;
