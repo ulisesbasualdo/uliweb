@@ -1,5 +1,10 @@
 import { Type } from '@angular/core';
 
+/**
+ * @description Este archivo disponibiliza el decorador BlogEntry
+ */
+
+
 export interface BlogEntryConfig {
   category: string;
   title: string;

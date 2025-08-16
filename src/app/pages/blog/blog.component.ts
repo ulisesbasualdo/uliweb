@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit    } from '@angular/core';
 import { BlogService } from './services/blog.service';
 import { DatePipe, NgComponentOutlet } from '@angular/common';
 
@@ -175,18 +175,10 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogComponent {
-  // protected blog = httpResource<IBlogContent>(() => 'blog.json');
+export class BlogComponent implements OnInit {
   protected readonly blogService = inject(BlogService);
-
-  constructor() {
-    // Debugging: mostrar información del servicio
-    console.log('BlogComponent inicializado');
-
-    // Monitorear cambios en las entradas
-    setInterval(() => {
-      console.log(`📊 Entradas actuales: ${this.blogService.allEntries().length}`);
-      console.log(`📂 Categorías: ${this.blogService.categories().join(', ')}`);
-    }, 2000);
+  ngOnInit(): void {
+    this.blogService.loadBlog();
   }
+
 }
