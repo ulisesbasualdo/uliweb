@@ -1,0 +1,636 @@
+<article class="blog-entry">
+  <header class="hero-section">
+    <img src="/assets/blog/blog-sin-backend-portada.jpg" alt="Blog sin backend en Angular" class="cover-image" />
+    <div class="hero-content">
+      <h1>🚀 Crea un Blog sin Backend en Angular</h1>
+      <p class="subtitle">Usando componentes personalizados, decoradores y automatización</p>
+    </div>
+  </header>
+
+  <div class="content">
+    <section class="intro">
+      <h2>💡 La Idea</h2>
+      <p>¿Necesitas un blog pero no quieres complicarte con bases de datos? Este sistema convierte cada entrada en un <strong>componente Angular independiente</strong> que se registra automáticamente usando decoradores.</p>
+    </section>
+
+    <section class="architecture">
+      <h2>🏗️ Arquitectura del Sistema</h2>
+
+      <div class="file-structure">
+        <h3>📁 Estructura de Carpetas</h3>
+        <pre class="code-block"><code>src/app/pages/blog/
+├── 📂 blog-entries/           # Componentes de entradas
+│   ├── 📄 <a href="#index-ts">index.ts</a>           # Auto-generado
+│   ├── 📂 entry-1/
+│   │   └── 📄 entry-1.component.ts
+│   └── 📂 entry-2/
+│       └── 📄 entry-2.component.ts
+├── 📂 decorators/
+│   └── 📄 <a href="#blog-entry-decorator">blog-entry.decorator.ts</a>  # Decorador de registro
+├── 📂 interfaces/
+│   └── 📄 <a href="#i-blog-entry">i-blog-entry.ts</a>          # Interface para entradas
+├── 📂 services/
+│   └── 📄 <a href="#blog-service">blog.service.ts</a>          # Gestión con signals
+├── 📄 <a href="#auto-register">auto-register.ts</a>             # Auto-registro de componentes
+└── 📄 <a href="#generate-index">generate-index.js</a>            # Script de automatización</code></pre>
+      </div>
+    </section>
+
+    <section class="step-1" id="blog-entry-decorator">
+      <h2>🎯 Paso 1: El Decorador de Registro</h2>
+      <p>Creamos un decorador que registra automáticamente cada componente:</p>
+
+      <div class="code-example">
+        <h4>📄 src/app/pages/blog/decorators/blog-entry.decorator.ts</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block typescript"><code>import &#123; Type &#125; from '@angular/core';
+
+/**
+ * @description Este archivo disponibiliza el decorador BlogEntry
+ */
+
+export interface BlogEntryConfig &#123;
+  category: string;
+  title: string;
+  date: Date;
+&#125;
+
+// Registry global que se llena automáticamente cuando se usan los decoradores
+const BLOG_ENTRY_REGISTRY = new Map&lt;Type&lt;unknown&gt;, BlogEntryConfig&gt;();
+
+export function BlogEntry(config: BlogEntryConfig) &#123;
+  return function &lt;T extends Type&lt;unknown&gt;&gt;(target: T): T &#123;
+    // Registrar inmediatamente en el registry
+    BLOG_ENTRY_REGISTRY.set(target, config);
+    return target;
+  &#125;;
+&#125;
+
+export function getBlogEntryRegistry(): Map&lt;Type&lt;unknown&gt;, BlogEntryConfig&gt; &#123;
+  return BLOG_ENTRY_REGISTRY;
+&#125;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="step-interface" id="i-blog-entry">
+      <h2>📝 Paso 2: Interface IBlogEntry</h2>
+      <p>Definimos la estructura de datos que representa cada entrada del blog:</p>
+
+      <div class="code-example">
+        <h4>📄 src/app/pages/blog/interfaces/i-blog-entry.ts</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block typescript"><code>import &#123; Type &#125; from "@angular/core";
+
+export interface IBlogEntry &#123;
+  id: number;
+  title: string;
+  date: Date;
+  category: string | null;
+  component: Type&lt;unknown&gt;;
+&#125;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="step-auto-register" id="auto-register">
+      <h2>🔗 Paso 3: Auto-Registro</h2>
+      <p>Creamos el archivo que importa automáticamente todos los componentes del blog:</p>
+
+      <div class="code-example">
+        <h4>📄 src/app/pages/blog/auto-register.ts</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block typescript"><code>// Auto-registro simple: importa el índice que tiene todos los componentes
+import './blog-entries/index';</code></pre>
+        </div>
+      </div>
+
+      <div class="auto-register-note">
+        <h4>💡 ¿Por qué es importante?</h4>
+        <p>Este archivo garantiza que todos los componentes del blog se ejecuten y registren sus decoradores automáticamente cuando el servicio se inicialice.</p>
+      </div>
+    </section>
+
+    <section class="step-2" id="blog-service">
+      <h2>⚡ Paso 4: Servicio con Signals</h2>
+      <p>Un servicio moderno que gestiona las entradas usando signals de Angular:</p>
+
+      <div class="code-example">
+        <h4>📄 src/app/pages/blog/services/blog.service.ts</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block typescript"><code>import &#123; computed, Injectable, signal &#125; from '@angular/core';
+import &#123; IBlogEntry &#125; from '../interfaces/i-blog-entry';
+import &#123; getBlogEntryRegistry &#125; from '../decorators/blog-entry.decorator';
+
+// Side effect import - auto-registra todos los componentes automáticamente
+import '../auto-register';
+
+@Injectable(&#123;
+  providedIn: 'root',
+&#125;)
+export class BlogService &#123;
+  private readonly nextId = signal(1);
+  private readonly entries = signal&lt;IBlogEntry[]&gt;([]);
+
+  readonly allEntries = computed(() =&gt; this.entries().sort((a, b) =&gt; a.id - b.id));
+
+  readonly categories = computed(() =&gt;
+    [...new Set(this.entries().map(entry =&gt; entry.category).filter(Boolean))]
+  );
+
+  readonly entriesByCategory = computed(() =&gt; &#123;
+    const grouped = new Map&lt;string, IBlogEntry[]&gt;();
+    this.allEntries().forEach(entry =&gt; &#123;
+      const category = entry.category ?? 'Sin Categoría';
+      if (!grouped.has(category)) &#123;
+        grouped.set(category, []);
+      &#125;
+      grouped.get(category)!.push(entry);
+    &#125;);
+    return grouped;
+  &#125;);
+
+  constructor() &#123;
+    this.loadBlog();
+  &#125;
+
+  public loadBlog(): void &#123;
+    this.updateEntries();
+  &#125;
+
+  private updateEntries(): void &#123;
+    const registry = getBlogEntryRegistry();
+    const blogEntries: IBlogEntry[] = [];
+
+    console.log(\`📊 Registry contiene $&#123;registry.size&#125; entradas\`);
+
+    registry.forEach((config, component) =&gt; &#123;
+      if (config) &#123;
+        blogEntries.push(&#123;
+          id: this.getNextId(),
+          category: config.category,
+          title: config.title,
+          date: config.date,
+          component,
+        &#125;);
+      &#125;
+    &#125;);
+    this.entries.set(blogEntries);
+  &#125;
+
+  private getNextId(): number &#123;
+    const currentId = this.nextId();
+    this.nextId.set(currentId + 1);
+    return currentId;
+  &#125;
+
+  getEntriesByCategory(category: string): IBlogEntry[] &#123;
+    return this.entriesByCategory().get(category) || [];
+  &#125;
+&#125;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="step-3">
+      <h2>📝 Paso 5: Crear una Entrada</h2>
+      <p>Cada entrada es un componente independiente con su decorador:</p>
+
+      <div class="code-example">
+        <h4>📄 src/app/pages/blog/blog-entries/mi-entrada/mi-entrada.component.ts</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block typescript"><code>import &#123; ChangeDetectionStrategy, Component &#125; from '@angular/core';
+import &#123; BlogEntry &#125; from '../../decorators/blog-entry.decorator';
+
+@BlogEntry(&#123;
+  category: 'Angular',
+  title: 'Mi Primera Entrada',
+  date: new Date('2025-01-15'),
+&#125;)
+@Component(&#123;
+  selector: 'app-mi-entrada',
+  imports: [],
+  template: \`
+    &lt;div class="content"&gt;
+      &lt;h2&gt;Mi Primera Entrada&lt;/h2&gt;
+      &lt;p&gt;Contenido increíble aquí...&lt;/p&gt;
+    &lt;/div&gt;
+  \`,
+  styles: \`
+    .content &#123;
+      padding: 1.5rem;
+      line-height: 1.6;
+      color: #e0e0e0;
+    &#125;
+
+    h2 &#123;
+      color: #fff;
+      margin-bottom: 1rem;
+    &#125;
+  \`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+&#125;)
+export class MiEntradaComponent &#123;&#125;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="manual-step">
+      <h2>✋ Paso 6: Registro Manual</h2>
+      <p>Luego se explicará cómo automatizar esto, si no quieres automatizar el proceso, esta es la forma: importar y exportar cada componente creado.</p>
+
+      <div class="code-example" id="index-ts">
+        <h4>📄 src/app/pages/blog/blog-entries/index.ts (Actualización Manual)</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block typescript"><code>
+
+import &#123;BlogSinBackendEnAngularComponent&#125; from './blog-sin-backend-en-angular/blog-sin-backend-en-angular.component';
+import &#123;LocalStorageAndSignalsComponent&#125; from './local-storage-and-signals/local-storage-and-signals.component';
+import &#123;VsCodeEmojisComponent&#125; from './vs-code-emojis/vs-code-emojis.component';
+// 👆 Agregar aquí tu nuevo componente:
+// import &#123;MiNuevoComponent&#125; from './mi-nuevo/mi-nuevo.component';
+
+export &#123;
+  BlogSinBackendEnAngularComponent,
+  LocalStorageAndSignalsComponent,
+  VsCodeEmojisComponent,
+  // 👆 Y también exportarlo aquí:
+  // MiNuevoComponent
+&#125;;</code></pre>
+        </div>
+      </div>
+
+      <div class="manual-note">
+        <h4>📝 Pasos Manuales:</h4>
+        <ol>
+          <li>Crear tu componente con <code>ng generate component</code></li>
+          <li>Agregar el decorador <code>@BlogEntry</code></li>
+          <li>Importar el componente en el <code>index.ts</code></li>
+          <li>Agregarlo a la lista de exports</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="automation">
+      <h2>🤖 Paso 7: Script de Creación Automática</h2>
+      <p>Primero creamos un script PowerShell que genere componentes y aplique automáticamente el decorador:</p>
+
+      <div class="code-example">
+        <h4>📄 scripts/new-blog-component-simple.ps1</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+          <pre class="code-block powershell"><code>param([Parameter(Mandatory=$true)][string]$ComponentName)
+
+Write-Host "Creando componente de blog: $ComponentName"
+
+ng generate component $ComponentName --path src/app/pages/blog/blog-entries
+
+if ($LASTEXITCODE -eq 0) &#123;
+  Write-Host "Componente creado exitosamente"
+  Write-Host "Modificando archivo..."
+
+  $componentPath = "src/app/pages/blog/blog-entries/$ComponentName/$ComponentName.component.ts"
+
+  if (Test-Path $componentPath) &#123;
+    $content = Get-Content $componentPath -Raw
+    $className = (($ComponentName -split '-' | ForEach-Object &#123; $_.Substring(0,1).ToUpper() + $_.Substring(1) &#125;) -join '') + 'Component'
+    $title = ($ComponentName -split '-' | ForEach-Object &#123; $_.Substring(0,1).ToUpper() + $_.Substring(1) &#125;) -join ' '
+
+    # Reemplazar todo el contenido para evitar problemas
+    $newContent = @"
+import &#123; ChangeDetectionStrategy, Component &#125; from '@angular/core';
+import &#123; BlogEntry &#125; from '../../decorators/blog-entry.decorator';
+
+@BlogEntry(&#123;
+  category: 'General',
+  title: '$title',
+  date: new Date(),
+&#125;)
+@Component(&#123;
+  selector: 'app-$ComponentName',
+  imports: [],
+  template: \`\`
+  &lt;div class="content"&gt;
+    &lt;h2&gt;$title&lt;/h2&gt;
+    &lt;p&gt;Contenido del artículo aquí...&lt;/p&gt;
+  &lt;/div&gt;
+  \`\`,
+  styles: \`\`
+  .content &#123;
+    padding: 1.5rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+  &#125;
+
+  h2 &#123;
+    color: #fff;
+    margin-bottom: 1rem;
+  &#125;
+  \`\`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+&#125;)
+export class $className &#123;
+
+&#125;
+"@
+
+    $newContent | Set-Content $componentPath -Encoding UTF8
+
+    Write-Host "Decorador agregado correctamente"
+  &#125;
+
+  Write-Host "Actualizando indice..."
+  npm run generate:blog-index
+
+  if ($LASTEXITCODE -eq 0) &#123;
+    Write-Host "Componente creado y configurado correctamente!"
+    Write-Host "Archivo creado en: $componentPath"
+  &#125;
+&#125;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="automation-generate">
+      <h2>🔄 Paso 8: Script de Auto-generación de Index</h2>
+      <p>Creamos un script JavaScript que escanee todas las carpetas y genere automáticamente el index.ts:</p>
+
+      <div class="file-structure">
+        <h3>📁 Estructura de Carpetas donde opera el script</h3>
+        <pre class="code-block"><code>src/app/pages/blog/
+├── 📄 generate-index.js          # Script de auto-generación
+├── 📂 blog-entries/              # Carpeta escaneada
+│   ├── 📄 index.ts              # Archivo generado automáticamente
+│   ├── 📂 mi-primera-entrada/
+│   │   └── 📄 mi-primera-entrada.component.ts
+│   ├── 📂 otra-entrada/
+│   │   └── 📄 otra-entrada.component.ts
+│   └── 📂 mas-entradas/
+│       └── 📄 mas-entradas.component.ts</code></pre>
+      </div>
+
+      <div class="automation-steps">
+        <div class="automation-step" id="generate-index">
+          <h3>📄 src/app/pages/blog/generate-index.js</h3>
+          <p>Script completo que escanea carpetas y crea imports automáticos:</p>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+            <pre class="code-block javascript"><code>const &#123; writeFileSync, readdirSync, statSync &#125; = require('fs');
+const &#123; basename, resolve, join &#125; = require('path');
+
+// Script para auto-generar el index.ts con todos los componentes
+async function generateBlogIndex() &#123;
+  try &#123;
+    // Usar rutas absolutas para evitar problemas de working directory
+    const blogEntriesPath = resolve(__dirname, 'blog-entries');
+    const componentFiles = findComponentFiles(blogEntriesPath);
+
+    console.log(\`🔍 Buscando en: $&#123;blogEntriesPath&#125;\`);
+    console.log(\`📁 Encontrados $&#123;componentFiles.length&#125; componentes\`);
+
+    let imports = '';
+    let exports = '';
+    const componentNames = [];
+
+    componentFiles.forEach(file =&gt; &#123;
+      // Extraer nombre del componente del archivo
+      const fileName = basename(file, '.component.ts');
+      const componentName = fileName
+        .split('-')
+        .map(word =&gt; word.charAt(0).toUpperCase() + word.slice(1))
+        .join('') + 'Component';
+
+      // Crear ruta relativa correcta SIN la extensión .ts
+      const relativePath = './' + file.replace(/\\/g, '/').replace('.component.ts', '.component');
+
+      imports += \`import &#123;$&#123;componentName&#125;&#125; from '$&#123;relativePath&#125;';\n\`;
+      componentNames.push(componentName);
+
+      console.log(\`✅ Agregado: $&#123;componentName&#125;\`);
+    &#125;);
+
+    exports = \`export &#123;\n  $&#123;componentNames.join(',\n  ')&#125;\n&#125;;\`;
+
+    const content = \`// Auto-generado: imports automáticos de componentes de blog
+// Este archivo se actualiza automáticamente cuando se agregan nuevos componentes
+
+$&#123;imports&#125;
+// Los decoradores se ejecutan automáticamente al importar
+console.log('✅ Todos los componentes de blog cargados automáticamente');
+
+$&#123;exports&#125;\`;
+
+    const outputPath = resolve(__dirname, 'blog-entries', 'index.ts');
+    writeFileSync(outputPath, content);
+    console.log(\`✅ index.ts generado en: $&#123;outputPath&#125;\`);
+
+  &#125; catch (error) &#123;
+    console.error('❌ Error generando index:', error);
+  &#125;
+&#125;
+
+function findComponentFiles(dir, basePath = '') &#123;
+  const files = [];
+
+  try &#123;
+    const entries = readdirSync(dir);
+
+    for (const entry of entries) &#123;
+      const fullPath = join(dir, entry);
+      const relativePath = basePath ? join(basePath, entry) : entry;
+
+      if (statSync(fullPath).isDirectory()) &#123;
+        // Recursivo para subdirectorios
+        files.push(...findComponentFiles(fullPath, relativePath));
+      &#125; else if (entry.endsWith('.component.ts')) &#123;
+        files.push(relativePath);
+      &#125;
+    &#125;
+  &#125; catch (error) &#123;
+    console.warn(\`⚠️ No se pudo leer directorio: $&#123;dir&#125;\`);
+  &#125;
+
+  return files;
+&#125;
+
+// Ejecutar si es llamado directamente
+if (require.main === module) &#123;
+  generateBlogIndex();
+&#125;
+
+module.exports = &#123; generateBlogIndex &#125;;</code></pre>
+          </div>
+        </div>
+
+        <div class="automation-step">
+          <h3>3️⃣ Resultado: src/app/pages/blog/blog-entries/index.ts Generado</h3>
+          <p>Así queda el archivo index.ts automáticamente generado:</p>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+            <pre class="code-block typescript"><code>// Auto-generado: imports automáticos de componentes de blog
+// Este archivo se actualiza automáticamente cuando se agregan nuevos componentes
+
+import &#123;BlogSinBackendEnAngularComponent&#125; from './blog-sin-backend-en-angular/blog-sin-backend-en-angular.component';
+import &#123;LocalStorageAndSignalsComponent&#125; from './local-storage-and-signals/local-storage-and-signals.component';
+import &#123;VsCodeEmojisComponent&#125; from './vs-code-emojis/vs-code-emojis.component';
+// Los decoradores se ejecutan automáticamente al importar
+console.log('✅ Todos los componentes de blog cargados automáticamente');
+
+export &#123;
+  BlogSinBackendEnAngularComponent,
+  LocalStorageAndSignalsComponent,
+  VsCodeEmojisComponent
+&#125;;</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="terminal-usage">
+      <h2>💻 Paso 9: Uso por Terminal</h2>
+      <p>Una vez que tienes los scripts configurados, crear nuevas entradas es súper simple:</p>
+
+      <div class="terminal-steps">
+        <div class="terminal-step">
+          <h3>1️⃣ Crear nueva entrada</h3>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+            <pre class="code-block powershell"><code>npm run new:blog mi-nueva-entrada</code></pre>
+          </div>
+          <p class="terminal-description">Esto ejecuta el script PowerShell que:</p>
+          <ul>
+            <li>✅ Crea el componente Angular</li>
+            <li>✅ Aplica automáticamente el decorador @BlogEntry</li>
+            <li>✅ Regenera el index.ts</li>
+            <li>✅ ¡La entrada aparece inmediatamente en el blog!</li>
+          </ul>
+        </div>
+
+        <div class="terminal-step">
+          <h3>2️⃣ Regenerar índice (si es necesario)</h3>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+            <pre class="code-block powershell"><code>npm run generate:blog-index</code></pre>
+          </div>
+          <p class="terminal-description">Por si necesitas regenerar manualmente el index.ts</p>
+        </div>
+
+        <div class="terminal-step">
+          <h3>3️⃣ Configuración en package.json</h3>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyToClipboard(this)">📋 Copiar</button>
+            <pre class="code-block json"><code>&#123;
+  "scripts": &#123;
+    "new:blog": "powershell -ExecutionPolicy Bypass -File scripts/new-blog-component-simple.ps1",
+    "generate:blog-index": "node src/app/pages/blog/generate-index.js"
+  &#125;
+&#125;</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>✨ Beneficios del Sistema</h2>
+      <div class="benefits-grid">
+        <div class="benefit">
+          <span class="icon">🚀</span>
+          <h3>Zero Backend</h3>
+          <p>Sin bases de datos, sin APIs, solo Angular puro</p>
+        </div>
+        <div class="benefit">
+          <span class="icon">⚡</span>
+          <h3>Súper Rápido</h3>
+          <p>Todo pre-renderizado y optimizado</p>
+        </div>
+        <div class="benefit">
+          <span class="icon">🔧</span>
+          <h3>Automatizado</h3>
+          <p>Un comando y tienes nueva entrada lista</p>
+        </div>
+        <div class="benefit">
+          <span class="icon">🎨</span>
+          <h3>Flexible</h3>
+          <p>Cada entrada puede tener su propio diseño</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="workflow">
+      <h2>🔄 Flujo Completo</h2>
+      <div class="workflow-steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <div class="step-content">
+            <h3>Configuras scripts una vez</h3>
+            <p>PowerShell + JavaScript + package.json</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <div class="step-content">
+            <h3>Ejecutas comando</h3>
+            <code>npm run new:blog mi-entrada</code>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <div class="step-content">
+            <h3>Se crea componente</h3>
+            <p>Con decorador @BlogEntry aplicado automáticamente</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          <div class="step-content">
+            <h3>Auto-registro</h3>
+            <p>El decorador registra la entrada automáticamente</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          <div class="step-content">
+            <h3>¡Aparece en el blog!</h3>
+            <p>Sin configuración adicional</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="conclusion">
+      <h2>🎉 Conclusión</h2>
+      <p>Este sistema combina lo mejor de Angular moderno: <strong>signals</strong>, <strong>decoradores</strong>, <strong>componentes standalone</strong> y <strong>automatización</strong> para crear un blog completamente funcional sin necesidad de backend.</p>
+      <p class="highlight">¡Perfecto para portfolios, documentación técnica o blogs personales!</p>
+    </footer>
+  </div>
+</article>
+
+<script>
+  function copyToClipboard(button) {
+    const codeBlock = button.nextElementSibling.querySelector('code');
+    const text = codeBlock.textContent;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const originalText = button.textContent;
+      button.textContent = '✅ Copiado!';
+      button.style.background = '#22c55e';
+
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = '#21262d';
+      }, 2000);
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+      button.textContent = '❌ Error';
+      setTimeout(() => {
+        button.textContent = '📋 Copiar';
+      }, 2000);
+    });
+  }
+</script>

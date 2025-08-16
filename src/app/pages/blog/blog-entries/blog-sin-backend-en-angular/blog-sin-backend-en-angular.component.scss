@@ -1,0 +1,970 @@
+.blog-entry {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #e0e0e0;
+  line-height: 1.7;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+
+  /* Scrollbars personalizados globales para todo el componente */
+  * {
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #21262d;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 4px;
+      border: 1px solid #21262d;
+
+      &:hover {
+        background: #484f58;
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #21262d;
+    }
+
+    /* Para Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #30363d #21262d;
+  }
+}
+
+.hero-section {
+  position: relative;
+  margin-bottom: 3rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.cover-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  filter: brightness(0.7);
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 2;
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+  }
+}
+
+.content {
+  padding: 0 2rem;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+section {
+  margin-bottom: 3rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: #61dafb;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  color: #ff6b6b;
+  margin: 1.5rem 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.file-structure {
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #61dafb;
+  width: 100%;
+  box-sizing: border-box;
+
+  a {
+    color: #61dafb;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #7dd3fc;
+      text-decoration: underline;
+    }
+  }
+}
+
+.code-container {
+  position: relative;
+  margin: 1rem 0;
+  overflow: visible;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(33, 38, 45, 0.3);
+  color: #ffd700;
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  z-index: 15;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    background: rgba(48, 54, 61, 0.9);
+    color: #fff;
+    border: 1px solid #30363d;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+  }
+}
+
+.code-block {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 0.5rem;
+  padding: 1rem 4rem 1rem 1rem;
+  overflow-x: auto;
+  overflow-y: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  margin: 0;
+  max-height: 400px;
+  line-height: 1.4;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Scrollbars personalizados globales */
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #21262d;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+    border: 1px solid #21262d;
+
+    &:hover {
+      background: #484f58;
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #21262d;
+  }
+
+  /* Para Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #30363d #21262d;
+}
+
+.code-block.typescript {
+  border-left: 4px solid #3178c6;
+
+  &::-webkit-scrollbar-thumb {
+    background: #3178c6;
+    border: 1px solid #21262d;
+
+    &:hover {
+      background: #4a90e2;
+    }
+  }
+
+  scrollbar-color: #3178c6 #21262d;
+}
+
+.code-block.javascript {
+  border-left: 4px solid #f7df1e;
+
+  &::-webkit-scrollbar-thumb {
+    background: #f7df1e;
+    border: 1px solid #21262d;
+
+    &:hover {
+      background: #fbbf24;
+    }
+  }
+
+  scrollbar-color: #f7df1e #21262d;
+}
+
+.code-block.powershell {
+  border-left: 4px solid #5391fe;
+
+  &::-webkit-scrollbar-thumb {
+    background: #5391fe;
+    border: 1px solid #21262d;
+
+    &:hover {
+      background: #6ba3ff;
+    }
+  }
+
+  scrollbar-color: #5391fe #21262d;
+}
+
+.code-block.json {
+  border-left: 4px solid #ffab00;
+
+  &::-webkit-scrollbar-thumb {
+    background: #ffab00;
+    border: 1px solid #21262d;
+
+    &:hover {
+      background: #fbbf24;
+    }
+  }
+
+  scrollbar-color: #ffab00 #21262d;
+}
+
+.code-example {
+  margin: 1.5rem 0;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.automation-steps {
+  display: grid;
+  gap: 2rem;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.automation-step {
+  background: rgba(97, 218, 251, 0.05);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #61dafb;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  h3 {
+    color: #61dafb;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: #e0e0e0;
+  }
+
+  .code-container {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 1rem 0;
+
+    .copy-btn {
+      background: rgba(97, 218, 251, 0.3);
+      color: #000;
+      border: 1px solid rgba(125, 211, 252, 0.5);
+      backdrop-filter: blur(4px);
+
+      &:hover {
+        background: rgba(125, 211, 252, 0.9);
+        color: #000;
+        border: 1px solid #7dd3fc;
+        backdrop-filter: blur(8px);
+      }
+    }
+
+    .code-block {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 500px;
+      border: 1px solid #30363d;
+      border-radius: 0.5rem;
+      background: #0d1117;
+      padding: 1rem 3rem 1rem 1rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      white-space: pre;
+      word-wrap: normal;
+
+      /* Estilo de scrollbar personalizado */
+      &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #21262d;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #30363d;
+        border-radius: 4px;
+
+        &:hover {
+          background: #484f58;
+        }
+      }
+
+      &::-webkit-scrollbar-corner {
+        background: #21262d;
+      }
+    }
+  }
+}
+
+.automation-generate {
+  background: rgba(247, 223, 30, 0.05);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #f7df1e;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  h2, h3 {
+    color: #f7df1e;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    color: #e0e0e0;
+  }
+
+  .file-structure {
+    background: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid #f7df1e;
+    margin: 1.5rem 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    h3 {
+      color: #f7df1e;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    .code-block {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 300px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      white-space: pre;
+      word-wrap: normal;
+
+      /* Scrollbar personalizado */
+      &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #21262d;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #30363d;
+        border-radius: 4px;
+
+        &:hover {
+          background: #484f58;
+        }
+      }
+    }
+  }
+
+  .automation-steps {
+    margin: 2rem 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .automation-step {
+      background: rgba(247, 223, 30, 0.1);
+      border-left: 4px solid #f7df1e;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
+
+      h3 {
+        color: #f7df1e;
+        margin-top: 0;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        margin-bottom: 1rem;
+        color: #e0e0e0;
+      }
+
+      .code-container {
+        position: relative;
+        overflow: visible;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 1rem 0;
+
+        .copy-btn {
+          background: rgba(247, 223, 30, 0.3);
+          color: #000;
+          border: 1px solid rgba(251, 191, 36, 0.5);
+          backdrop-filter: blur(4px);
+
+          &:hover {
+            background: rgba(251, 191, 36, 0.9);
+            color: #000;
+            border: 1px solid #fbbf24;
+            backdrop-filter: blur(8px);
+          }
+        }
+
+        .code-block {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          overflow-x: auto;
+          overflow-y: auto;
+          max-height: 600px;
+          border: 1px solid #30363d;
+          border-radius: 0.5rem;
+          background: #0d1117;
+          padding: 1rem 3rem 1rem 1rem;
+          font-family: 'Fira Code', monospace;
+          font-size: 0.8rem;
+          line-height: 1.4;
+          white-space: pre;
+          word-wrap: normal;
+
+          /* Scrollbar personalizado para código largo */
+          &::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: #21262d;
+            border-radius: 5px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: #f7df1e;
+            border-radius: 5px;
+
+            &:hover {
+              background: #fbbf24;
+            }
+          }
+
+          &::-webkit-scrollbar-corner {
+            background: #21262d;
+          }
+        }
+      }
+    }
+  }
+
+  .code-container {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .copy-btn {
+      background: rgba(247, 223, 30, 0.3);
+      color: #000;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      backdrop-filter: blur(4px);
+
+      &:hover {
+        background: rgba(251, 191, 36, 0.9);
+        color: #000;
+        border: 1px solid #fbbf24;
+        backdrop-filter: blur(8px);
+      }
+    }
+  }
+}
+
+.terminal-usage {
+  background: rgba(83, 145, 254, 0.05);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #5391fe;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.terminal-steps {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.terminal-step {
+  background: rgba(83, 145, 254, 0.1);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #5391fe;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  h3 {
+    color: #5391fe;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .terminal-description {
+    margin: 1rem 0 0.5rem 0;
+    color: #e0e0e0;
+    font-style: italic;
+  }
+
+  ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+
+    li {
+      margin: 0.5rem 0;
+      color: #e0e0e0;
+    }
+  }
+
+  .code-container {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .copy-btn {
+      background: rgba(83, 145, 254, 0.3);
+      color: #fff;
+      border: 1px solid rgba(107, 163, 255, 0.5);
+      backdrop-filter: blur(4px);
+
+      &:hover {
+        background: rgba(107, 163, 255, 0.9);
+        color: #fff;
+        border: 1px solid #6ba3ff;
+        backdrop-filter: blur(8px);
+      }
+    }
+  }
+}
+
+.manual-step {
+  background: rgba(255, 165, 0, 0.05);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #ffa500;
+  margin: 2rem 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.step-auto-register {
+  background: rgba(34, 197, 94, 0.05);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #22c55e;
+  margin: 2rem 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auto-register-note {
+  background: rgba(34, 197, 94, 0.1);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  border: 1px solid #22c55e;
+
+  h4 {
+    color: #22c55e;
+    margin-top: 0;
+  }
+
+  p {
+    margin: 0.5rem 0 0 0;
+    color: #e0e0e0;
+  }
+}
+
+.manual-note {
+  background: rgba(255, 165, 0, 0.1);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  border: 1px solid #ffa500;
+
+  h4 {
+    color: #ffa500;
+    margin-top: 0;
+  }
+
+  ol {
+    margin: 0.5rem 0 0 1rem;
+
+    li {
+      margin: 0.5rem 0;
+      color: #e0e0e0;
+
+      code {
+        background: #21262d;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        color: #ffa500;
+      }
+    }
+  }
+}
+
+.commands {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #0d1117;
+  padding: 1rem;
+  border-radius: 0.5rem;
+
+  code {
+    background: #21262d;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    color: #ffd700;
+    font-weight: bold;
+  }
+
+  span {
+    color: #8b949e;
+    font-style: italic;
+  }
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.benefit {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 1px solid #333;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  .icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #61dafb;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.workflow-steps {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #ffd700;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  .step-number {
+    background: #ffd700;
+    color: #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .step-content {
+    flex: 1;
+    min-width: 0;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #ffd700;
+    }
+
+    p {
+      margin: 0;
+      color: #8b949e;
+      word-wrap: break-word;
+    }
+
+    code {
+      background: #21262d;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      color: #ffd700;
+      word-break: break-all;
+    }
+  }
+}
+
+.conclusion {
+  background: linear-gradient(135deg, rgba(97, 218, 251, 0.1), rgba(255, 215, 0, 0.1));
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #333;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  .highlight {
+    background: rgba(255, 215, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #ffd700;
+    word-wrap: break-word;
+  }
+}
+
+.intro {
+  background: rgba(97, 218, 251, 0.05);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #61dafb;
+}
+
+strong {
+  color: #61dafb;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 0 1rem;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .code-container {
+    margin: 1rem 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .copy-btn {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 0 0 0.75rem auto;
+    display: block;
+    width: fit-content;
+    z-index: 5;
+  }
+
+  .code-block {
+    padding: 1rem;
+    margin-top: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .terminal-steps {
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .automation-steps {
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+
+    .automation-step {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+
+      .code-container {
+        width: 100%;
+        max-width: 100%;
+
+        .code-block {
+          font-size: 0.75rem;
+          max-height: 400px;
+          padding: 0.75rem;
+        }
+      }
+    }
+  }
+
+  .terminal-step,
+  .automation-step,
+  .automation-generate,
+  .manual-step,
+  .step-auto-register {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .file-structure,
+  .code-example {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .workflow-steps {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .step {
+    width: 100%;
+    max-width: 100%;
+
+    .step-content {
+      min-width: 0;
+      flex: 1;
+
+      code {
+        word-break: break-all;
+        overflow-wrap: break-word;
+      }
+    }
+  }
+}

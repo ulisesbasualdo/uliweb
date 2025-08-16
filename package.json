@@ -11,7 +11,6 @@
     "format": "prettier --write .",
     "generate:blog-component": "ng generate component",
     "generate:blog-index": "node src/app/pages/blog/generate-index.js",
-    "watch:blog": "chokidar 'src/app/pages/blog/blog-entries/**/*.component.ts' -c 'npm run generate:blog-index'",
     "new:blog": "powershell -ExecutionPolicy Bypass -File scripts/new-blog-component-simple.ps1"
   },
   "private": true,
