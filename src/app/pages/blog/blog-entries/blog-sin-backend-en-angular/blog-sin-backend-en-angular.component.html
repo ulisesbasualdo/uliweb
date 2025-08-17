@@ -37,6 +37,7 @@ src/app/pages/blog/
 ├── 📂 services/
 │   └── 📄 <a href="#blog-service">blog.service.ts</a>
 ├── 📄 <a href="#auto-register">auto-register.ts</a>
+├── 📄 <a href="#blog-component">blog.component.ts</a>
        </code></pre>
       </div>
     </section>
@@ -95,8 +96,33 @@ src/app/pages/blog/
       </div>
     </section>
 
+    <section class="step-service-usage" id="blog-component">
+      <h2>🔄 Paso 5: Cómo Usar el Servicio (Blog Component)</h2>
+      <p>Una vez que tenemos nuestro servicio, necesitamos usarlo en un componente para mostrar las entradas.
+         Aquí está el ejemplo real de cómo se implementa en el componente principal del blog:</p>
+
+      <div class="code-example">
+        <h4>📄 src/app/pages/blog/blog.component.ts</h4>
+        <app-code-shower
+          [code]="blogComponentCode"
+          language="typescript">
+        </app-code-shower>
+      </div>
+
+      <div class="service-usage-note">
+        <h4>🔑 Puntos Clave del Uso del Servicio:</h4>
+        <ul>
+          <li><strong>Inyección:</strong> <code>inject(BlogService)</code> - Angular moderno sin constructor</li>
+          <li><strong>Categories:</strong> <code>blogService.categories()</code> - Obtiene todas las categorías disponibles</li>
+          <li><strong>Entries por Categoría:</strong> <code>blogService.getEntriesByCategory(category)</code> - Filtra entradas</li>
+          <li><strong>NgComponentOutlet:</strong> Renderiza dinámicamente cada componente de entrada</li>
+          <li><strong>&#64;defer:</strong> Carga diferida para mejor performance</li>
+        </ul>
+      </div>
+    </section>
+
     <section class="step-3">
-      <h2>📝 Paso 5: Crear una Entrada (Componente)</h2>
+      <h2>📝 Paso 6: Crear una Entrada (Componente)</h2>
       <p>Cada entrada es un componente independiente al
         que debemos agregarle el decorador @BlogEntry</p>
 
@@ -110,7 +136,7 @@ src/app/pages/blog/
     </section>
 
     <section class="manual-step">
-      <h2>Paso 6: Registro Manual</h2>
+      <h2>Paso 7: Registro Manual</h2>
       <p>Luego se explicará cómo automatizar lo siguiente, sin embargo la
         forma primitiva cual hombre de las cavernas es importar y
         exportar cada componente creado que tenga el decorador @BlogEntry.</p>
@@ -134,7 +160,7 @@ src/app/pages/blog/
     </section>
 
     <section class="automation" id="new-blog-component">
-      <h2>🤖 Paso 7 (opcional): Script de Creación Automática</h2>
+      <h2>🤖 Paso 8 (opcional): Script de Creación Automática</h2>
       <p><strong>¿Qué quiero lograr?</strong> Quiero poder generar un componente listo como entrada de blog desde la consola,
         ya con su decorador aplicado y, además, que el archivo index.ts se regenere solo,
         agregando las importaciones y exportaciones necesarias.</p><br>
@@ -150,7 +176,7 @@ src/app/pages/blog/
     </section>
 
     <section class="automation-generate">
-      <h2>🔄 Paso 8: Script de Auto-generación de Index</h2>
+      <h2>🔄 Paso 9: Script de Auto-generación de Index</h2>
       <p>Creamos un script JavaScript que escanee todos los componentes existentes dentro de blog-entry y genere automáticamente el archivo index.ts:</p>
 
       <div class="automation-steps">
@@ -175,7 +201,7 @@ src/app/pages/blog/
     </section>
 
     <section class="terminal-usage">
-      <h2>💻 Paso 9: Uso por Terminal</h2>
+      <h2>💻 Paso 10: Uso por Terminal</h2>
       <p>Una vez que tienes los scripts configurados, crear nuevas entradas es súper simple:</p>
 
       <div class="terminal-steps">
