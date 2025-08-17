@@ -90,13 +90,14 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
 
     .line-numbers {
       background: rgba(15, 23, 42, 0.6);
-      padding: 1rem 0.5rem 1rem 1rem;
+      padding: 1rem 0.5rem 1.5rem 1rem;
       border-right: 1px solid rgba(148, 163, 184, 0.2);
       user-select: none;
       min-width: 3rem;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      height: 100%;
     }
 
     .line-number {
@@ -108,7 +109,7 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
 
     .code-content {
       flex: 1;
-      padding: 1rem;
+      padding: 1rem 1rem 0rem 1rem;
       margin: 0;
       font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
       font-size: 0.875rem;
