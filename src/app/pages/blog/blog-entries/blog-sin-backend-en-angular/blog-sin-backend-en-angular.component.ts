@@ -296,10 +296,11 @@ export {
   VsCodeEmojisComponent
 };`;
 
-  protected readonly packageJsonCode = `{
+  protected readonly packageJsonCode = `
   "scripts": {
-    "new:blog": "powershell -ExecutionPolicy Bypass -File scripts/new-blog-component-simple.ps1",
-    "generate:blog-index": "node src/app/pages/blog/generate-index.js"
+    "generate:blog-component": "ng generate component",
+    "generate:blog-index": "node scripts/blog-generate-index-ts.js",
+    "new:blog": "powershell -ExecutionPolicy Bypass -File scripts/new-blog-component.ps1"
   }
 }`;
 

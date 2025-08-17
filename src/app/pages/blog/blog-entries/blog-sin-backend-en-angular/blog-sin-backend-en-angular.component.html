@@ -1,10 +1,9 @@
 <article class="blog-entry">
   <header class="hero-section">
-    <img src="/assets/blog/blog-sin-backend-portada.jpg" alt="Blog sin backend en Angular" class="cover-image" />
     <div class="hero-content">
-      <h1>🚀 Crea un Blog sin Backend en Angular</h1>
-      <p class="subtitle">Usando componentes personalizados, decoradores y automatización</p>
+      <h1>🚀 Cómo Crear un Blog sin Backend en Angular</h1>
     </div>
+    <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
   </header>
 
   <div class="content">
@@ -136,6 +135,9 @@ src/app/pages/blog/
 
     <section class="automation" id="new-blog-component">
       <h2>🤖 Paso 7 (opcional): Script de Creación Automática</h2>
+      <p><strong>¿Qué quiero lograr?</strong> Quiero poder generar un componente listo como entrada de blog desde la consola,
+        ya con su decorador aplicado y, además, que el archivo index.ts se regenere solo,
+        agregando las importaciones y exportaciones necesarias.</p><br>
       <p>Primero creamos un script PowerShell que genere componentes y aplique automáticamente el decorador:</p>
 
       <div class="code-example">
@@ -203,6 +205,7 @@ src/app/pages/blog/
 
         <div class="terminal-step">
           <h3>3️⃣ Configuración en package.json</h3>
+          <p>Agrega estos scripts al archivo package.json</p>
           <app-code-shower
             [code]="packageJsonCode"
             language="json">
@@ -216,13 +219,16 @@ src/app/pages/blog/
       <div class="benefits-grid">
         <div class="benefit">
           <span class="icon">🚀</span>
-          <h3>Zero Backend</h3>
-          <p>Sin bases de datos, sin APIs, solo Angular puro</p>
+          <h3>Sin Backend</h3>
+          <p>Sin bases de datos, sin APIs, solo Angular puro, lo que significa que puedes subirlo a cualquier servidor</p>
         </div>
         <div class="benefit">
           <span class="icon">⚡</span>
-          <h3>Súper Rápido</h3>
-          <p>Todo pre-renderizado y optimizado</p>
+          <h3>Amigable con la IA</h3>
+          <p>Y sí, ya que tenés tu componente único por entrada,
+            le podés pedir a la IA que te arme un artículo de la gran siete en ese componente, sobre el tema que quieras dar.
+            Y nunca vas a romper el proyecto.
+          </p>
         </div>
         <div class="benefit">
           <span class="icon">🔧</span>
@@ -232,48 +238,7 @@ src/app/pages/blog/
         <div class="benefit">
           <span class="icon">🎨</span>
           <h3>Flexible</h3>
-          <p>Cada entrada puede tener su propio diseño</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="workflow">
-      <h2>🔄 Flujo Completo</h2>
-      <div class="workflow-steps">
-        <div class="step">
-          <span class="step-number">1</span>
-          <div class="step-content">
-            <h3>Configuras scripts una vez</h3>
-            <p>PowerShell + JavaScript + package.json</p>
-          </div>
-        </div>
-        <div class="step">
-          <span class="step-number">2</span>
-          <div class="step-content">
-            <h3>Ejecutas comando</h3>
-            <code>npm run new:blog mi-entrada</code>
-          </div>
-        </div>
-        <div class="step">
-          <span class="step-number">3</span>
-          <div class="step-content">
-            <h3>Se crea componente</h3>
-            <p>Con decorador @BlogEntry aplicado automáticamente</p>
-          </div>
-        </div>
-        <div class="step">
-          <span class="step-number">4</span>
-          <div class="step-content">
-            <h3>Auto-registro</h3>
-            <p>El decorador registra la entrada automáticamente</p>
-          </div>
-        </div>
-        <div class="step">
-          <span class="step-number">5</span>
-          <div class="step-content">
-            <h3>¡Aparece en el blog!</h3>
-            <p>Sin configuración adicional</p>
-          </div>
+          <p>Cada entrada puede tener su propio diseño, su propia lógica, cada entrada puede ser un mundo aparte</p>
         </div>
       </div>
     </section>

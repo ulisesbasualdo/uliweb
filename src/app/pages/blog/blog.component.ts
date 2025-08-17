@@ -26,7 +26,7 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
                 </div>
               </div>
 
-              <h2 class="titulo-posteo">{{ entry.title }}</h2>
+              <!-- <h2 class="titulo-posteo">{{ entry.title }}</h2> -->
 
               <div class="contenido-componente">
                 @defer {
