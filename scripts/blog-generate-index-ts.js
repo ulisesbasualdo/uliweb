@@ -1,10 +1,8 @@
 const { writeFileSync, readdirSync, statSync } = require('fs');
 const { basename, resolve, join } = require('path');
 
-// Script para auto-generar el index.ts con todos los componentes
 async function generateBlogIndex() {
   try {
-    // Usar rutas absolutas para evitar problemas de working directory
     const blogEntriesPath = resolve(__dirname, '../src/app/pages/blog/blog-entries');
     const componentFiles = findComponentFiles(blogEntriesPath);
 
@@ -16,14 +14,12 @@ async function generateBlogIndex() {
     const componentNames = [];
 
     componentFiles.forEach(file => {
-      // Extraer nombre del componente del archivo
       const fileName = basename(file, '.component.ts');
       const componentName = fileName
         .split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join('') + 'Component';
 
-      // Crear ruta relativa correcta SIN la extensión .ts
       const relativePath = './' + file.replace(/\\/g, '/').replace('.component.ts', '.component');
 
       imports += `import {${componentName}} from '${relativePath}';\n`;
@@ -57,7 +53,6 @@ function findComponentFiles(dir, basePath = '') {
       const relativePath = basePath ? join(basePath, entry) : entry;
 
       if (statSync(fullPath).isDirectory()) {
-        // Recursivo para subdirectorios
         files.push(...findComponentFiles(fullPath, relativePath));
       } else if (entry.endsWith('.component.ts')) {
         files.push(relativePath);
@@ -70,7 +65,6 @@ function findComponentFiles(dir, basePath = '') {
   return files;
 }
 
-// Ejecutar si es llamado directamente
 if (require.main === module) {
   generateBlogIndex();
 }
