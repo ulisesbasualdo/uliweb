@@ -193,7 +193,31 @@ export class CodeShowerComponent {
   protected readonly isCopied = signal(false);
 
   readonly cleanCode = computed(() => {
-    return this.autoClean() ? this.code().trim() : this.code();
+    if (!this.autoClean()) {
+      return this.code();
+    }
+
+    const code = this.code().trim();
+    const lines = code.split('\n');
+
+    // Encontrar la indentación mínima común (excluyendo líneas vacías)
+    const nonEmptyLines = lines.filter(line => line.trim().length > 0);
+    if (nonEmptyLines.length === 0) return code;
+
+    const minIndentation = Math.min(
+      ...nonEmptyLines.map(line => {
+        const match = line.match(/^(\s*)/);
+        return match ? match[1].length : 0;
+      })
+    );
+
+    // Remover la indentación común de todas las líneas
+    const cleanedLines = lines.map(line => {
+      if (line.trim().length === 0) return line; // Mantener líneas vacías como están
+      return line.substring(minIndentation);
+    });
+
+    return cleanedLines.join('\n');
   });
 
   readonly lineNumbers = computed(() => {
@@ -215,42 +239,131 @@ export class CodeShowerComponent {
   }
 
   private highlightSyntax(code: string, language: string): string {
-    // Escapar HTML primero
-    let highlighted = this.escapeHtml(code);
-
-    // Aplicar patrones específicos de manera cuidadosa
-    if (language === 'typescript' || language === 'javascript') {
-      // Comentarios
-      highlighted = highlighted.replace(/\/\/.*$/gm, '<span class="comment">$&</span>');
-      highlighted = highlighted.replace(/\/\*[\s\S]*?\*\//g, '<span class="comment">$&</span>');
-
-      // Strings (evitar procesar contenido ya dentro de spans)
-      highlighted = highlighted.replace(/(&quot;[^&]*?&quot;)/g, (match) => {
-        if (highlighted.indexOf(match) > 0 && highlighted.charAt(highlighted.indexOf(match) - 1) === '>') {
-          return match; // Ya está dentro de un span
-        }
-        return `<span class="string">${match}</span>`;
-      });
-
-      highlighted = highlighted.replace(/(&#39;[^&]*?&#39;)/g, (match) => {
-        if (highlighted.indexOf(match) > 0 && highlighted.charAt(highlighted.indexOf(match) - 1) === '>') {
-          return match;
-        }
-        return `<span class="string">${match}</span>`;
-      });
-
-      // Keywords
-      const keywords = /\b(export|import|class|interface|const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|new|this|super|extends|implements|public|private|protected|static|readonly|async|await|type|typeof|keyof|in|of|instanceof|as|from|default|namespace|module|declare|abstract|boolean|number|string|void|null|undefined|any|unknown|never|object|symbol)\b/g;
-      highlighted = highlighted.replace(keywords, '<span class="keyword">$&</span>');
-
-      // Numbers
-      highlighted = highlighted.replace(/\b\d+\.?\d*\b/g, '<span class="number">$&</span>');
-
-      // Properties (word followed by colon)
-      highlighted = highlighted.replace(/([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g, '<span class="property">$1</span>:');
+    if (language !== 'typescript' && language !== 'javascript') {
+      return this.escapeHtml(code);
     }
 
-    return highlighted;
+    // Parse the code character by character to avoid conflicts
+    let result = '';
+    let i = 0;
+    const len = code.length;
+
+    while (i < len) {
+      // Check for comments first
+      if (i < len - 1 && code[i] === '/' && code[i + 1] === '/') {
+        // Single line comment
+        let commentEnd = code.indexOf('\n', i);
+        if (commentEnd === -1) commentEnd = len;
+        const comment = code.substring(i, commentEnd);
+        result += `<span class="comment">${this.escapeHtml(comment)}</span>`;
+        i = commentEnd;
+        continue;
+      }
+
+      if (i < len - 1 && code[i] === '/' && code[i + 1] === '*') {
+        // Multi-line comment
+        let commentEnd = code.indexOf('*/', i + 2);
+        if (commentEnd === -1) commentEnd = len;
+        else commentEnd += 2;
+        const comment = code.substring(i, commentEnd);
+        result += `<span class="comment">${this.escapeHtml(comment)}</span>`;
+        i = commentEnd;
+        continue;
+      }
+
+      // Check for strings
+      if (code[i] === '"') {
+        let stringEnd = i + 1;
+        while (stringEnd < len && (code[stringEnd] !== '"' || code[stringEnd - 1] === '\\')) {
+          stringEnd++;
+        }
+        if (stringEnd < len) stringEnd++; // Include the closing quote
+        const string = code.substring(i, stringEnd);
+        result += `<span class="string">${this.escapeHtml(string)}</span>`;
+        i = stringEnd;
+        continue;
+      }
+
+      if (code[i] === "'") {
+        let stringEnd = i + 1;
+        while (stringEnd < len && (code[stringEnd] !== "'" || code[stringEnd - 1] === '\\')) {
+          stringEnd++;
+        }
+        if (stringEnd < len) stringEnd++; // Include the closing quote
+        const string = code.substring(i, stringEnd);
+        result += `<span class="string">${this.escapeHtml(string)}</span>`;
+        i = stringEnd;
+        continue;
+      }
+
+      if (code[i] === '`') {
+        let stringEnd = i + 1;
+        while (stringEnd < len && (code[stringEnd] !== '`' || code[stringEnd - 1] === '\\')) {
+          stringEnd++;
+        }
+        if (stringEnd < len) stringEnd++; // Include the closing backtick
+        const string = code.substring(i, stringEnd);
+        result += `<span class="string">${this.escapeHtml(string)}</span>`;
+        i = stringEnd;
+        continue;
+      }
+
+      // Check for keywords
+      if (/[a-zA-Z_]/.test(code[i])) {
+        let wordEnd = i;
+        while (wordEnd < len && /[a-zA-Z0-9_]/.test(code[wordEnd])) {
+          wordEnd++;
+        }
+        const word = code.substring(i, wordEnd);
+
+        const keywords = ['export', 'import', 'class', 'interface', 'const', 'let', 'var',
+                         'function', 'return', 'if', 'else', 'for', 'while', 'do', 'switch',
+                         'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw',
+                         'new', 'this', 'super', 'extends', 'implements', 'public', 'private',
+                         'protected', 'static', 'readonly', 'async', 'await', 'type', 'typeof',
+                         'keyof', 'in', 'of', 'instanceof', 'as', 'from', 'default', 'namespace',
+                         'module', 'declare', 'abstract', 'boolean', 'number', 'string', 'void',
+                         'null', 'undefined', 'any', 'unknown', 'never', 'object', 'symbol'];
+
+        if (keywords.includes(word)) {
+          result += `<span class="keyword">${this.escapeHtml(word)}</span>`;
+        } else {
+          result += this.escapeHtml(word);
+        }
+        i = wordEnd;
+        continue;
+      }
+
+      // Check for numbers
+      if (/\d/.test(code[i])) {
+        let numberEnd = i;
+        while (numberEnd < len && /[\d.]/.test(code[numberEnd])) {
+          numberEnd++;
+        }
+        const number = code.substring(i, numberEnd);
+        result += `<span class="number">${this.escapeHtml(number)}</span>`;
+        i = numberEnd;
+        continue;
+      }
+
+      // Handle whitespace (preserve spaces, tabs, newlines)
+      if (/\s/.test(code[i])) {
+        let whitespaceEnd = i;
+        while (whitespaceEnd < len && /\s/.test(code[whitespaceEnd])) {
+          whitespaceEnd++;
+        }
+        const whitespace = code.substring(i, whitespaceEnd);
+        result += this.escapeHtml(whitespace);
+        i = whitespaceEnd;
+        continue;
+      }
+
+      // Regular character (operators, punctuation, etc.)
+      result += this.escapeHtml(code[i]);
+      i++;
+    }
+
+    return result;
   }
 
   private getLanguagePatterns(language: string) {
@@ -355,10 +468,7 @@ export class CodeShowerComponent {
   }
 
   private escapeHtml(text: string): string {
-    // Limpiar el código de espacios innecesarios al inicio/final
-    const cleanedText = text.trim();
-
-    return cleanedText
+    return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
