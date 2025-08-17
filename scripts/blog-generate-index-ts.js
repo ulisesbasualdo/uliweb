@@ -5,7 +5,7 @@ const { basename, resolve, join } = require('path');
 async function generateBlogIndex() {
   try {
     // Usar rutas absolutas para evitar problemas de working directory
-    const blogEntriesPath = resolve(__dirname, 'blog-entries');
+    const blogEntriesPath = resolve(__dirname, '../src/app/pages/blog/blog-entries');
     const componentFiles = findComponentFiles(blogEntriesPath);
 
     console.log(`🔍 Buscando en: ${blogEntriesPath}`);
@@ -34,16 +34,10 @@ async function generateBlogIndex() {
 
     exports = `export {\n  ${componentNames.join(',\n  ')}\n};`;
 
-    const content = `// Auto-generado: imports automáticos de componentes de blog
-// Este archivo se actualiza automáticamente cuando se agregan nuevos componentes
-
-${imports}
-// Los decoradores se ejecutan automáticamente al importar
-console.log('✅ Todos los componentes de blog cargados automáticamente');
-
+    const content = `${imports}
 ${exports}`;
 
-    const outputPath = resolve(__dirname, 'blog-entries', 'index.ts');
+    const outputPath = resolve(__dirname, '../src/app/pages/blog/blog-entries', 'index.ts');
     writeFileSync(outputPath, content);
     console.log(`✅ index.ts generado en: ${outputPath}`);
 
@@ -70,7 +64,7 @@ function findComponentFiles(dir, basePath = '') {
       }
     }
   } catch (error) {
-    console.warn(`⚠️ No se pudo leer directorio: ${dir}`);
+    console.warn(`⚠️ No se pudo leer directorio: ${dir}: ${error} `);
   }
 
   return files;

@@ -13,4 +13,14 @@ import { BlogEntry } from '../../decorators/blog-entry.decorator';
   styleUrl: './blog-sin-backend-en-angular.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogSinBackendEnAngularComponent {}
+export class BlogSinBackendEnAngularComponent {
+
+  copyToClipboard(content: string) {
+    navigator.clipboard.writeText(content).then(() => {
+      console.log('Texto copiado al portapapeles');
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+    });
+  }
+}
+

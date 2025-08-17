@@ -10,8 +10,8 @@
     "lint": "eslint . --ext .ts,.html",
     "format": "prettier --write .",
     "generate:blog-component": "ng generate component",
-    "generate:blog-index": "node src/app/pages/blog/generate-index.js",
-    "new:blog": "powershell -ExecutionPolicy Bypass -File scripts/new-blog-component-simple.ps1"
+    "generate:blog-index": "node scripts/blog-generate-index-ts.js",
+    "new:blog": "powershell -ExecutionPolicy Bypass -File scripts/new-blog-component.ps1"
   },
   "private": true,
   "dependencies": {
