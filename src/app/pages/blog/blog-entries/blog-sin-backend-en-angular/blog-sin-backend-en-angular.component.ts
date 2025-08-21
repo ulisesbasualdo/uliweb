@@ -43,8 +43,7 @@ export function getBlogEntryRegistry(): Map<Type<unknown>, BlogEntryConfig> {
   component: Type<unknown>;
 }`;
 
-  protected readonly autoRegisterCode = `// Auto-generado por scripts/blog-generate-index-ts.js
-import './blog-entries';`;
+  protected readonly autoRegisterCode = `import './blog-entries';`;
 
   protected readonly serviceCode = `import { computed, Injectable, signal } from '@angular/core';
 import { IBlogEntry } from '../interfaces/i-blog-entry';

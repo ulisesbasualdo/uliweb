@@ -7,11 +7,7 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
     <div class="code-container">
       <div class="code-header">
         <span class="language-tag">{{ language().toUpperCase() }}</span>
-        <button
-          class="copy-btn"
-          (click)="copyToClipboard()"
-          [class.copied]="isCopied()"
-        >
+        <button class="copy-btn" (click)="copyToClipboard()" [class.copied]="isCopied()">
           {{ isCopied() ? '✓ Copiado' : '📋 Copiar' }}
         </button>
       </div>
@@ -21,9 +17,7 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
             <span class="line-number">{{ lineNumber }}</span>
           }
         </div>
-        <pre class="code-content" [class]="'language-' + language()">
-          <code [innerHTML]="highlightedCode()"></code>
-        </pre>
+        <pre class="code-content" [class]="'language-' + language()"><code [innerHTML]="highlightedCode()"></code></pre>
       </div>
     </div>
   `,
@@ -141,22 +135,70 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
     }
 
     /* Estilos de syntax highlighting con colores vibrantes */
-    :global(.keyword) { color: #ff6b9d; font-weight: 600; } /* Rosa vibrante */
-    :global(.string) { color: #06d6a0; font-weight: 500; } /* Verde vibrante */
-    :global(.comment) { color: #64748b; font-style: italic; opacity: 0.8; } /* Gris para comentarios */
-    :global(.number) { color: #ffd23f; font-weight: 500; } /* Amarillo fuerte */
-    :global(.operator) { color: #6366f1; font-weight: 600; } /* Azul vibrante */
-    :global(.punctuation) { color: #94a3b8; } /* Gris claro para puntuación */
-    :global(.function) { color: #00d4ff; font-weight: 600; } /* Celeste vibrante */
-    :global(.variable) { color: #e879f9; font-weight: 500; } /* Lila vibrante */
-    :global(.property) { color: #22c55e; font-weight: 500; } /* Verde diferente */
-    :global(.selector) { color: #ff6b9d; font-weight: 600; } /* Rosa para selectores CSS */
-    :global(.tag) { color: #ff6347; font-weight: 600; } /* Naranja vibrante para tags HTML */
-    :global(.attr-name) { color: #ffd23f; font-weight: 500; } /* Amarillo para atributos */
-    :global(.attr-value) { color: #06d6a0; font-weight: 500; } /* Verde para valores */
-    :global(.builtin) { color: #6366f1; font-weight: 500; } /* Azul para built-ins */
-    :global(.type) { color: #00d4ff; font-weight: 600; } /* Celeste para tipos */
-    :global(.decorator) { color: #ffa726; font-weight: 600; } /* Naranja para decoradores */
+    :global(.keyword) {
+      color: #ff6b9d;
+      font-weight: 600;
+    } /* Rosa vibrante */
+    :global(.string) {
+      color: #06d6a0;
+      font-weight: 500;
+    } /* Verde vibrante */
+    :global(.comment) {
+      color: #64748b;
+      font-style: italic;
+      opacity: 0.8;
+    } /* Gris para comentarios */
+    :global(.number) {
+      color: #ffd23f;
+      font-weight: 500;
+    } /* Amarillo fuerte */
+    :global(.operator) {
+      color: #6366f1;
+      font-weight: 600;
+    } /* Azul vibrante */
+    :global(.punctuation) {
+      color: #94a3b8;
+    } /* Gris claro para puntuación */
+    :global(.function) {
+      color: #00d4ff;
+      font-weight: 600;
+    } /* Celeste vibrante */
+    :global(.variable) {
+      color: #e879f9;
+      font-weight: 500;
+    } /* Lila vibrante */
+    :global(.property) {
+      color: #22c55e;
+      font-weight: 500;
+    } /* Verde diferente */
+    :global(.selector) {
+      color: #ff6b9d;
+      font-weight: 600;
+    } /* Rosa para selectores CSS */
+    :global(.tag) {
+      color: #ff6347;
+      font-weight: 600;
+    } /* Naranja vibrante para tags HTML */
+    :global(.attr-name) {
+      color: #ffd23f;
+      font-weight: 500;
+    } /* Amarillo para atributos */
+    :global(.attr-value) {
+      color: #06d6a0;
+      font-weight: 500;
+    } /* Verde para valores */
+    :global(.builtin) {
+      color: #6366f1;
+      font-weight: 500;
+    } /* Azul para built-ins */
+    :global(.type) {
+      color: #00d4ff;
+      font-weight: 600;
+    } /* Celeste para tipos */
+    :global(.decorator) {
+      color: #ffa726;
+      font-weight: 600;
+    } /* Naranja para decoradores */
 
     @media (max-width: 768px) {
       .code-header {
@@ -231,12 +273,15 @@ export class CodeShowerComponent {
   });
 
   copyToClipboard() {
-    navigator.clipboard.writeText(this.cleanCode()).then(() => {
-      this.isCopied.set(true);
-      setTimeout(() => this.isCopied.set(false), 2000);
-    }).catch(err => {
-      console.error('Error al copiar:', err);
-    });
+    navigator.clipboard
+      .writeText(this.cleanCode())
+      .then(() => {
+        this.isCopied.set(true);
+        setTimeout(() => this.isCopied.set(false), 2000);
+      })
+      .catch(err => {
+        console.error('Error al copiar:', err);
+      });
   }
 
   private highlightSyntax(code: string, language: string): string {
@@ -317,14 +362,66 @@ export class CodeShowerComponent {
         }
         const word = code.substring(i, wordEnd);
 
-        const keywords = ['export', 'import', 'class', 'interface', 'const', 'let', 'var',
-                         'function', 'return', 'if', 'else', 'for', 'while', 'do', 'switch',
-                         'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw',
-                         'new', 'this', 'super', 'extends', 'implements', 'public', 'private',
-                         'protected', 'static', 'readonly', 'async', 'await', 'type', 'typeof',
-                         'keyof', 'in', 'of', 'instanceof', 'as', 'from', 'default', 'namespace',
-                         'module', 'declare', 'abstract', 'boolean', 'number', 'string', 'void',
-                         'null', 'undefined', 'any', 'unknown', 'never', 'object', 'symbol'];
+        const keywords = [
+          'export',
+          'import',
+          'class',
+          'interface',
+          'const',
+          'let',
+          'var',
+          'function',
+          'return',
+          'if',
+          'else',
+          'for',
+          'while',
+          'do',
+          'switch',
+          'case',
+          'break',
+          'continue',
+          'try',
+          'catch',
+          'finally',
+          'throw',
+          'new',
+          'this',
+          'super',
+          'extends',
+          'implements',
+          'public',
+          'private',
+          'protected',
+          'static',
+          'readonly',
+          'async',
+          'await',
+          'type',
+          'typeof',
+          'keyof',
+          'in',
+          'of',
+          'instanceof',
+          'as',
+          'from',
+          'default',
+          'namespace',
+          'module',
+          'declare',
+          'abstract',
+          'boolean',
+          'number',
+          'string',
+          'void',
+          'null',
+          'undefined',
+          'any',
+          'unknown',
+          'never',
+          'object',
+          'symbol',
+        ];
 
         if (keywords.includes(word)) {
           result += `<span class="keyword">${this.escapeHtml(word)}</span>`;
@@ -365,107 +462,6 @@ export class CodeShowerComponent {
     }
 
     return result;
-  }
-
-  private getLanguagePatterns(language: string) {
-    const basePatterns = {
-      typescript: [
-        // Comentarios primero
-        { pattern: /\/\/.*$/gm, className: 'comment' },
-        { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-
-        // Strings
-        { pattern: /'([^'\\]|\\.)*'/g, className: 'string' },
-        { pattern: /"([^"\\]|\\.)*"/g, className: 'string' },
-        { pattern: /`([^`\\]|\\.)*`/g, className: 'string' },
-
-        // Decoradores
-        { pattern: /@[a-zA-Z_][a-zA-Z0-9_]*/g, className: 'decorator' },
-
-        // Keywords
-        { pattern: /\b(abstract|any|as|async|await|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|instanceof|interface|is|keyof|let|module|namespace|never|new|null|number|object|of|package|private|protected|public|readonly|require|return|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|var|void|while|with|yield)\b/g, className: 'keyword' },
-
-        // Types y interfaces
-        { pattern: /\b[A-Z][a-zA-Z0-9]*(?=<|\s|$|\[|\.|\,|\)|;)/g, className: 'type' },
-
-        // Properties (after : in interfaces)
-        { pattern: /([a-zA-Z_][a-zA-Z0-9_]*)\s*(?=:)/g, className: 'property' },
-
-        // Functions
-        { pattern: /\b[a-zA-Z_][a-zA-Z0-9_]*(?=\s*\()/g, className: 'function' },
-
-        // Numbers
-        { pattern: /\b\d+\.?\d*\b/g, className: 'number' },
-
-        // Operators
-        { pattern: /[+\-*\/%=<>!&\|^~?:]+/g, className: 'operator' },
-
-        // Punctuation
-        { pattern: /[{}()\[\];,.:]/g, className: 'punctuation' },
-      ],
-
-      javascript: [
-        { pattern: /\/\/.*$/gm, className: 'comment' },
-        { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-        { pattern: /'([^'\\]|\\.)*'/g, className: 'string' },
-        { pattern: /"([^"\\]|\\.)*"/g, className: 'string' },
-        { pattern: /`([^`\\]|\\.)*`/g, className: 'string' },
-        { pattern: /\b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|false|finally|for|from|function|if|import|in|instanceof|let|new|null|of|return|super|switch|this|throw|true|try|typeof|undefined|var|void|while|with|yield)\b/g, className: 'keyword' },
-        { pattern: /\b[a-zA-Z_][a-zA-Z0-9_]*(?=\s*\()/g, className: 'function' },
-        { pattern: /\b\d+\.?\d*\b/g, className: 'number' },
-        { pattern: /[+\-*/%=<>!&|^~?:]+/g, className: 'operator' },
-        { pattern: /[{}()\[\];,.:]/g, className: 'punctuation' },
-      ],
-
-      html: [
-        { pattern: /<!--[\s\S]*?-->/g, className: 'comment' },
-        { pattern: /<\/?[a-zA-Z][a-zA-Z0-9-]*(?:\s[^>]*)?>/g, className: 'tag' },
-        { pattern: /\s[a-zA-Z-]+(?==)/g, className: 'attr-name' },
-        { pattern: /=\s*"[^"]*"/g, className: 'attr-value' },
-        { pattern: /=\s*'[^']*'/g, className: 'attr-value' },
-      ],
-
-      css: [
-        { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-        { pattern: /[.#]?[a-zA-Z][a-zA-Z0-9-_]*(?=\s*{)/g, className: 'selector' },
-        { pattern: /[a-zA-Z-]+(?=\s*:)/g, className: 'property' },
-        { pattern: /:\s*[^;{}]+/g, className: 'attr-value' },
-        { pattern: /[{}();]/g, className: 'punctuation' },
-      ],
-
-      scss: [
-        { pattern: /\/\/.*$/gm, className: 'comment' },
-        { pattern: /\/\*[\s\S]*?\*\//g, className: 'comment' },
-        { pattern: /\$[a-zA-Z_][a-zA-Z0-9_-]*/g, className: 'variable' },
-        { pattern: /@[a-zA-Z-]+/g, className: 'keyword' },
-        { pattern: /[.#&%]?[a-zA-Z][a-zA-Z0-9-_]*(?=\s*[{,:])/g, className: 'selector' },
-        { pattern: /[a-zA-Z-]+(?=\s*:)/g, className: 'property' },
-        { pattern: /:\s*[^;{}]+/g, className: 'attr-value' },
-        { pattern: /[{}();]/g, className: 'punctuation' },
-      ],
-
-      powershell: [
-        { pattern: /#.*$/gm, className: 'comment' },
-        { pattern: /\b(function|param|if|else|elseif|foreach|for|while|do|switch|try|catch|finally|return|break|continue|Write-Host|Get-\w+|Set-\w+|New-\w+|Test-\w+)\b/gi, className: 'keyword' },
-        { pattern: /\$[a-zA-Z_][a-zA-Z0-9_]*/g, className: 'variable' },
-        { pattern: /-[a-zA-Z][a-zA-Z0-9]*/g, className: 'builtin' },
-        { pattern: /'([^'\\]|\\.)*'/g, className: 'string' },
-        { pattern: /"([^"\\]|\\.)*"/g, className: 'string' },
-        { pattern: /\b\d+\.?\d*\b/g, className: 'number' },
-        { pattern: /[+\-*/%=<>!&|^~?:]+/g, className: 'operator' },
-        { pattern: /[{}()\[\];,.:]/g, className: 'punctuation' },
-      ],
-
-      json: [
-        { pattern: /"[^"]*"\s*:/g, className: 'property' },
-        { pattern: /:\s*"[^"]*"/g, className: 'string' },
-        { pattern: /:\s*(true|false|null)\b/g, className: 'keyword' },
-        { pattern: /:\s*\d+\.?\d*/g, className: 'number' },
-        { pattern: /[{}()\[\];,.:]/g, className: 'punctuation' },
-      ]
-    };
-
-    return basePatterns[language as keyof typeof basePatterns] || basePatterns.typescript;
   }
 
   private escapeHtml(text: string): string {

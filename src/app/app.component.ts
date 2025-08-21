@@ -24,7 +24,7 @@ import { AboutMeComponent } from "./pages/about-me/about-me.component";
             </div>
           </div>
           <h1 class="nombre">Uli B.</h1>
-          <p class="descripcion">Desarrollador Frontend</p>
+          <p class="descripcion">Desarrollador Frontend Especializado en Angular</p>
         </div>
       </section>
       <app-deslizador-contacto></app-deslizador-contacto>

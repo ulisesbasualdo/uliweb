@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BlogService } from './services/blog.service';
 import { DatePipe, NgComponentOutlet } from '@angular/common';
+import { BlogContentWrapperComponent } from './components/blog-content-wrapper.component';
 
 @Component({
   selector: 'app-blog',
-  imports: [NgComponentOutlet, DatePipe],
+  imports: [NgComponentOutlet, DatePipe, BlogContentWrapperComponent],
   template: `
     @if (blogService.categories().length === 0) {
       <div class="estado-vacio">
@@ -21,20 +22,22 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
               <div class="encabezado-posteo">
                 <img [src]="'img/me.png'" alt="Perfil" />
                 <div>
-                  <p class="nombre-posteo">Mi Nombre</p>
+                  <p class="nombre-posteo">Uli B.</p>
                   <p class="fecha-posteo">{{ entry.date | date:'dd MMMM yyyy' }}</p>
                 </div>
               </div>
 
               <!-- <h2 class="titulo-posteo">{{ entry.title }}</h2> -->
 
-              <div class="contenido-componente">
-                @defer {
-                  <ng-container [ngComponentOutlet]="entry.component"></ng-container>
-                } @loading {
-                  <p>Cargando contenido...</p>
-                }
-              </div>
+              <app-blog-content-wrapper [entryId]="entry.id">
+                <div class="contenido-componente">
+                  @defer {
+                    <ng-container [ngComponentOutlet]="entry.component"></ng-container>
+                  } @loading {
+                    <p>Cargando contenido...</p>
+                  }
+                </div>
+              </app-blog-content-wrapper>
             </div>
           }
         </section>
