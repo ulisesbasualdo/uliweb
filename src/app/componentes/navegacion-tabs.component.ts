@@ -166,9 +166,9 @@ export class NavegacionTabsComponent implements AfterViewInit {
 
   tabs: Tab[] = [
     { id: 'inicio', nombre: 'Inicio' },
-    { id: 'sobreMi', nombre: 'Sobre Mí' },
     { id: 'servicios', nombre: 'Servicios' },
-    { id: 'contacto', nombre: 'Contacto' }
+    { id: 'sobreMi', nombre: 'Sobre Mí' },
+    // { id: 'contacto', nombre: 'Contacto' }
   ];
 
   tabActiva = signal<TipoTab>('inicio');

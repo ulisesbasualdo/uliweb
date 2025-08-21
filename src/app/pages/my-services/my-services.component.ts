@@ -5,28 +5,18 @@ import { Component } from '@angular/core';
   imports: [],
   template: `
     <div seccion="servicios">
-      <h2 class="titulo-servicios">Mis Servicios</h2>
+      <h2 class="titulo-servicios">Clases particulares de Angular</h2>
       <div class="lista-servicios">
         <div class="servicio">
           <div class="icono-servicio">💻</div>
-          <h3 class="titulo-servicio">Desarrollo Web</h3>
+          <h3 class="titulo-servicio">Clases personalizadas</h3>
           <p class="descripcion-servicio">
-            Desarrollo de sitios web modernos y responsive con las últimas tecnologías del mercado.
+            Si tienes alguna duda con el código o estás trabado en algo, o bien no
+            sabes cómo desarrollar alguna funcionalidad, puedes contar con mis clases
+            donde te apoyaré para sacar esa feature lo más rápido posible, y sobre todo que
+            entiendas lo que desarrollamos. También brindo clases para aprender desde cero Angular,
+            desde el punto que no sabés ni siquiera cómo crear un proyecto o qué es Angular.
           </p>
-        </div>
-
-        <div class="servicio">
-          <div class="icono-servicio">🎨</div>
-          <h3 class="titulo-servicio">Diseño UX/UI</h3>
-          <p class="descripcion-servicio">
-            Diseño de interfaces intuitivas y atractivas centradas en la experiencia del usuario.
-          </p>
-        </div>
-
-        <div class="servicio">
-          <div class="icono-servicio">📱    </div>
-          <h3 class="titulo-servicio">Desarrollo Móvil</h3>
-          <p class="descripcion-servicio">Aplicaciones móviles nativas y cross-platform para iOS y Android.</p>
         </div>
       </div>
     </div>

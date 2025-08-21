@@ -4,13 +4,12 @@ import { DeslizadorContactoComponent } from './componentes/deslizador-contacto.c
 import { NavegacionTabsComponent } from './componentes/navegacion-tabs.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { MyServicesComponent } from "./pages/my-services/my-services.component";
-import { ContactComponent } from "./pages/contact/contact.component";
 import { AboutMeComponent } from "./pages/about-me/about-me.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, DeslizadorContactoComponent, NavegacionTabsComponent, BlogComponent, MyServicesComponent, ContactComponent, AboutMeComponent],
+  imports: [FormsModule, DeslizadorContactoComponent, NavegacionTabsComponent, BlogComponent, MyServicesComponent, AboutMeComponent],
   template: `
     <div class="contenedor-principal">
       <section class="portada">
@@ -32,7 +31,6 @@ import { AboutMeComponent } from "./pages/about-me/about-me.component";
         <app-blog seccion="inicio" />
         <app-about-me seccion="sobreMi" />
         <app-my-services seccion="servicios" />
-        <app-contact seccion="contacto" />
       </app-navegacion-tabs>
     </div>
   `,
