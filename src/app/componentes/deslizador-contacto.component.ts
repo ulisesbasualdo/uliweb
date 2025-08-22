@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
         @switch (opcionActiva()) {
           @case ('email') {
             <div class="opcion-email">
-              <p>Para contato envíame un email a <strong>ulimiramar@gmail.com</strong></p>
+              <p>Para contacto envíame un email a <strong>ulimiramar@gmail.com</strong></p>
             </div>
           }
           @case ('linkedin') {
