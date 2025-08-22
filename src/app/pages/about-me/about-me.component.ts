@@ -6,23 +6,21 @@ import { Component } from '@angular/core';
   template: `
       <h2 class="titulo-sobre-mi">¡Hola! 👋</h2>
       <p class="descripcion-sobre-mi">
-        Aquí va una descripción sobre mí, mi experiencia, mis intereses y lo que me apasiona. Me dedico al desarrollo
-        web y diseño de interfaces desde hace varios años.
+        Mi nombre es Ulises, soy desarrollador fullstack, me apasiona la programación y sobre todo el desarrollo frontend.
+        A parte de la programación dicen que hay que tener una vida, en esa vida me encanta tomar clases de danza clásica y bailar tango.
       </p>
       <div class="foto-sobre-mi">
-        <img src="/img/me.png" alt="me" />
-        <p class="leyenda-foto">Una imagen vale más que mil palabras</p>
+        <img src="/img/sobre-mi-2.jpg" alt="me" />
+        <p class="leyenda-foto">El ingrediente secreto es constancia</p>
       </div>
       <p class="descripcion-adicional">
-        Más información sobre mí y mi trayectoria profesional. Me especializo en crear aplicaciones web modernas con
-        enfoque en la experiencia de usuario y la accesibilidad.
+        Actualmente trabajo profesionalmente como desarrollador frontend con la tecnología Angular y brindo clases particulares del mismo
+        framework para quienes quieren empezar de cero o ya tienen un conocimiento.
       </p>
-      <div class="firma">Mi Firma</div>
+      <div class="firma">Uli B.</div>
       <div class="redes-sociales">
-        <a href="#" class="red-social">📱</a>
-        <a href="#" class="red-social">📘</a>
-        <a href="#" class="red-social">📸</a>
-        <a href="#" class="red-social">🐦</a>
+        <a href="#" class="red-social">TikTok</a>
+        <a href="#" class="red-social">YouTube</a>
       </div>
   `,
   styles: `
@@ -46,7 +44,7 @@ import { Component } from '@angular/core';
     }
 
     .foto-sobre-mi img {
-      max-width: 100%;
+      max-width: 50%;
       border-radius: 0.5rem;
       margin-bottom: 0.5rem;
     }
@@ -71,14 +69,14 @@ import { Component } from '@angular/core';
     }
 
     .red-social {
-      font-size: 1.5rem;
+      font-size: 1rem;
       text-decoration: none;
-      color: white;
+      color: #00d0ff;
       transition: transform 0.3s ease;
     }
 
     .red-social:hover {
-      transform: scale(1.2);
+      transform: scale(1.05);
     }
   `,
 })

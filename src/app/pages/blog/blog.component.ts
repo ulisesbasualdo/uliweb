@@ -20,14 +20,14 @@ import { BlogContentWrapperComponent } from './components/blog-content-wrapper.c
           @for (entry of blogService.getEntriesByCategory(category ?? ''); track entry.id) {
             <div class="posteo">
               <div class="encabezado-posteo">
-                <img [src]="'img/me.png'" alt="Perfil" />
+                <img [src]="'img/me2.png'" alt="Perfil" />
                 <div>
                   <p class="nombre-posteo">Uli B.</p>
                   <p class="fecha-posteo">{{ entry.date | date:'dd MMMM yyyy' }}</p>
                 </div>
               </div>
 
-              <!-- <h2 class="titulo-posteo">{{ entry.title }}</h2> -->
+              <h2 class="titulo-posteo">{{ entry.title }}</h2>
 
               <app-blog-content-wrapper [entryId]="entry.id">
                 <div class="contenido-componente">

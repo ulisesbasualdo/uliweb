@@ -1,8 +1,15 @@
-<article class="blog-entry">
+<article appVerticalStepper
+[separateLeft]="50"
+  [startStep]=20
+  verticalLineNeonColor="#1FFFCE"
+  stepColor="yellow"
+  finalStepColor="#80FF1F"
+  class="blog-entry"
+>
   <header class="hero-section">
-    <div class="hero-content">
+    <!-- <div class="hero-content">
       <h1>Cómo Crear un Blog sin Backend en Angular</h1>
-    </div>
+    </div> -->
     <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
   </header>
 
@@ -44,7 +51,7 @@ src/app/pages/blog/
        </code></pre>
       </div>
     </section>
-    <section class="step-1" id="blog-entry-decorator">
+    <section step step1 class="step-1" id="blog-entry-decorator">
       <h2>🎯 Paso 1: El Decorador @BlogEntry</h2>
       <p>Creamos un decorador, un ejemplo de decorador es el clásico
       <strong>@Component</strong> de angular, esta vez crearemos uno para nosotros</p>
@@ -58,7 +65,7 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section class="step-interface" id="i-blog-entry">
+    <section step step2 class="step-interface" id="i-blog-entry">
       <h2>📝 Paso 2: Interface IBlogEntry</h2>
       <p>Definimos la estructura de datos que representa cada entrada del blog:</p>
 
@@ -71,7 +78,7 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section class="step-auto-register" id="auto-register">
+    <section step step3 class="step-auto-register" id="auto-register">
       <h2>🔗 Paso 3: Auto-Registro</h2>
       <p>Creamos el archivo que importa index.ts donde suceden todas las importaciones de los componentes que son entradas del blog:</p>
 
@@ -85,7 +92,7 @@ src/app/pages/blog/
 
     </section>
 
-    <section class="step-2" id="blog-service">
+    <section step step4 class="step-2" id="blog-service">
       <h2>⚡ Paso 4: Servicio con Signals</h2>
       <p>Un servicio moderno que gestiona las entradas usando signals de Angular:</p>
 
@@ -98,7 +105,7 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section class="step-service-usage" id="blog-component">
+    <section step step5 class="step-service-usage" id="blog-component">
       <h2>🔄 Paso 5: Cómo Usar el Servicio (Blog Component)</h2>
       <p>Una vez que tenemos nuestro servicio, necesitamos usarlo en un componente para mostrar las entradas.
          Aquí está el ejemplo real de cómo se implementa en el componente principal del blog:</p>

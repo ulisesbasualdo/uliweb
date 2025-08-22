@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BlogEntry } from '../../decorators/blog-entry.decorator';
 import { CodeShowerComponent } from '../../../../shared/components/code-shower/code-shower.component';
+import { VerticalStepperDirective } from '../../../../shared/directives/vertical-stepper.directive';
 
 @BlogEntry({
   category: 'Angular',
-  title: 'Blog sin backend en angular',
+  title: 'Cómo Crear un Blog sin Backend en Angular',
   date: new Date('2025-08-15'),
 })
 @Component({
   selector: 'app-blog-sin-backend-en-angular',
-  imports: [CodeShowerComponent],
+  imports: [CodeShowerComponent, VerticalStepperDirective],
   templateUrl: './blog-sin-backend-en-angular.component.html',
   styleUrl: './blog-sin-backend-en-angular.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

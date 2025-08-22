@@ -14,12 +14,12 @@ import { AboutMeComponent } from "./pages/about-me/about-me.component";
     <div class="contenedor-principal">
       <section class="portada">
         <div class="contenedor-portada">
-          <img [src]="'img/portada.webp'" alt="me" class="imagen-portada" />
+          <img [src]="'img/portada.png'" alt="me" class="imagen-portada" />
         </div>
         <div class="perfil">
           <div class="circulo-perfil-contenedor">
             <div class="circulo-perfil">
-              <img [src]="'/img/me.png'" alt="me" />
+              <img [src]="'/img/me2.png'" alt="me" />
             </div>
           </div>
           <h1 class="nombre">Uli B.</h1>
