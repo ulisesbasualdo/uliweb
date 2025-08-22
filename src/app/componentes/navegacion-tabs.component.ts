@@ -1,8 +1,6 @@
 import { Component, signal, ElementRef, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 
-import { animate, style, transition, trigger } from '@angular/animations';
-
-type TipoTab = 'inicio' | 'sobreMi' | 'servicios' | 'contacto';
+type TipoTab = 'blog' | 'sobreMi' | 'servicios' | 'contacto';
 
 interface Tab {
   id: TipoTab;
@@ -30,9 +28,9 @@ interface Tab {
 
       <div class="contenido-tab">
         @switch (tabActiva()) {
-          @case ('inicio') {
+          @case ('blog') {
             <div class="tab-inicio animacion-entrada">
-              <ng-content select="[seccion='inicio']"></ng-content>
+              <ng-content select="[seccion='blog']"></ng-content>
             </div>
           }
           @case ('sobreMi') {
@@ -165,13 +163,13 @@ export class NavegacionTabsComponent implements AfterViewInit {
   @ViewChildren('tabButton') tabButtons!: QueryList<ElementRef>;
 
   tabs: Tab[] = [
-    { id: 'inicio', nombre: 'Inicio' },
+    { id: 'blog', nombre: 'Blog' },
     { id: 'servicios', nombre: 'Servicios' },
     { id: 'sobreMi', nombre: 'Sobre Mí' },
     // { id: 'contacto', nombre: 'Contacto' }
   ];
 
-  tabActiva = signal<TipoTab>('inicio');
+  tabActiva = signal<TipoTab>('blog');
   indicadorTransform = signal('translateX(0) scaleX(1)');
   tabActivaIndex = signal(0);
 

@@ -1,27 +1,27 @@
 <article class="blog-entry">
   <header class="hero-section">
     <div class="hero-content">
-      <h1>🚀 Cómo Crear un Blog sin Backend en Angular</h1>
+      <h1>Cómo Crear un Blog sin Backend en Angular</h1>
     </div>
     <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
   </header>
 
   <div class="content">
     <section class="intro">
-      <h2>💡 El problema y la solución</h2>
+      <h2>💡 Problema y Solución Propuesta</h2>
       <p>Quería crear un blog, pero que cada entrada pueda personalizarla a mi gusto, para eso
         anulé la idea de tener un administrador donde escribir posteos de blog y pensé en esta
         solución:
         Usar una lógica para convertir un <strong>componente de Angular en entrada de blog</strong> permitiéndome así personalizar a niveles inimaginables cada entrada.</p>
     </section>
 
-    <div data-see-more-point></div>
+
 
 
     <section class="architecture">
       <h2>🏗️ Arquitectura del Sistema</h2>
 
-      <div class="file-structure">
+      <div data-see-more-point  class="file-structure">
         <h3>📁 Estructura de Carpetas</h3>
         <pre class="code-block"><code>
 scripts/<a href="#generate-index">blog-generate-index-ts.js</a>
@@ -44,8 +44,6 @@ src/app/pages/blog/
        </code></pre>
       </div>
     </section>
-
-
     <section class="step-1" id="blog-entry-decorator">
       <h2>🎯 Paso 1: El Decorador @BlogEntry</h2>
       <p>Creamos un decorador, un ejemplo de decorador es el clásico

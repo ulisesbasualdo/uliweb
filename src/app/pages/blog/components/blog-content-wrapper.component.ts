@@ -15,19 +15,23 @@ import { SeeMoreService } from '../services/see-more.service';
 @Component({
   selector: 'app-blog-content-wrapper',
   template: `
-    <div
-      class="blog-content-container"
-      [class.collapsed]="!isExpanded()"
-      [style.max-height]="maxHeight()"
-      #contentContainer>
-      <ng-content></ng-content>
+    <div class="blog-content-container" #contentContainer>
+      <div
+        class="content-inner"
+        [class.collapsed]="!isExpanded()"
+        [style.max-height]="maxHeight()">
+        <ng-content></ng-content>
 
-      @if (!isExpanded() && hasSeeMorePoint()) {
-        <div class="fade-overlay"></div>
-      }
+        @if (!isExpanded() && hasSeeMorePoint()) {
+          <div class="fade-overlay"></div>
+        }
+      </div>
 
       @if (hasSeeMorePoint()) {
-        <div class="see-more-controls">
+        <div
+          class="see-more-controls"
+          [class.state-collapsed]="!isExpanded()"
+          [class.state-expanded]="isExpanded()">
           @if (!isExpanded()) {
             <button class="see-more-btn" (click)="toggleExpanded()">Ver más ▼</button>
           } @else {
@@ -38,62 +42,74 @@ import { SeeMoreService } from '../services/see-more.service';
     </div>
   `,
   styles: `
-    .blog-content-container {
+     .blog-content-container {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
+    }
+
+    .content-inner {
+      position: relative;
       transition: max-height 0.4s ease-in-out;
+    }
+
+    .content-inner.collapsed {
+      overflow: hidden;
+      border-radius:30px;
     }
 
     .fade-overlay {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      inset: auto 0 0 0;
       height: 200px;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 1));
+      background: linear-gradient(transparent, rgba(0,0,0,1));
       pointer-events: none;
       z-index: 1;
     }
 
-    .see-more-controls:has(.see-more-btn)  {
+    /* Botón cuando está colapsado (flotando sobre el fade) */
+    .see-more-controls.state-collapsed {
       position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      z-index: 2;
       display: flex;
       justify-content: center;
-      z-index: 9999999999;
-      right: 300px;
-      bottom: 18px;
     }
 
-    .see-more-controls:has(.see-less-btn){
-      margin-top: 1rem;
-      position: relative;
+    /* Botón "Ver menos" sticky inverso: se pega al bottom hasta alcanzar su lugar natural */
+    .see-more-controls.state-expanded {
+      position: sticky;
+      bottom: 1rem; /* separación del borde inferior */
       display: flex;
       justify-content: center;
+      margin-top: 1rem;
+      z-index: 5;
     }
 
     .see-more-btn,
     .see-less-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;
+      border:none;
+      padding:.75rem 1.5rem;
+      border-radius:25px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.3s;
+      font-size:.9rem;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+    }
+
+    .see-less-btn {
+      background: linear-gradient(135deg,#764ba22f 0%,#667eea2f 100%);
     }
 
     .see-more-btn:hover,
     .see-less-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    }
-
-    .see-less-btn {
-      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      box-shadow: 0 8px 25px rgba(102,126,234,.4);
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -111,13 +127,11 @@ export class BlogContentWrapperComponent implements AfterViewInit, AfterViewChec
 
   protected readonly hasSeeMorePoint = computed(() => {
     const hasPoint = this.seeMorePointElement() !== null;
-    console.log(`🎯 hasSeeMorePoint: ${hasPoint}`);
     return hasPoint;
   });
 
   protected readonly isExpanded = computed(() => {
     const expanded = this.seeMoreService.isExpanded(this.entryId());
-    console.log(`📖 isExpanded for entry ${this.entryId()}: ${expanded}`);
     return expanded;
   });
 
@@ -125,7 +139,6 @@ export class BlogContentWrapperComponent implements AfterViewInit, AfterViewChec
     const expanded = this.isExpanded();
     const hasPoint = this.hasSeeMorePoint();
     const height = expanded || !hasPoint ? 'none' : this.collapsedHeight();
-    console.log(`📐 maxHeight: ${height} (expanded: ${expanded}, hasPoint: ${hasPoint})`);
     return height;
   });
 
@@ -150,10 +163,7 @@ export class BlogContentWrapperComponent implements AfterViewInit, AfterViewChec
       if (seeMoreElement) {
         this.seeMorePointElement.set(seeMoreElement);
         this.calculateCollapsedHeight(seeMoreElement);
-        this.seeMorePointFound = true; // Marcar como encontrado
-        console.log('✅ See more point encontrado y configurado');
-      } else {
-        console.log('🔍 Buscando see more point...');
+        this.seeMorePointFound = true;
       }
     }
   }
@@ -167,14 +177,12 @@ export class BlogContentWrapperComponent implements AfterViewInit, AfterViewChec
       // Agregamos un pequeño margen para el efecto de fade
       const finalHeight = Math.max(relativeTop + 50, 200); // Mínimo 200px
       this.collapsedHeight.set(`${finalHeight}px`);
-      console.log(`📏 Altura calculada: ${finalHeight}px (relativeTop: ${relativeTop}px)`);
     }
   }
 
   protected toggleExpanded(): void {
     const entryId = this.entryId();
     const currentState = this.seeMoreService.isExpanded(entryId);
-    console.log(`🔄 Toggle expanded para entry ${entryId}: ${currentState} -> ${!currentState}`);
     this.seeMoreService.toggleExpanded(entryId);
   }
 }

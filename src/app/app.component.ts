@@ -28,7 +28,7 @@ import { AboutMeComponent } from "./pages/about-me/about-me.component";
       </section>
       <app-deslizador-contacto></app-deslizador-contacto>
       <app-navegacion-tabs>
-        <app-blog seccion="inicio" />
+        <app-blog seccion="blog" />
         <app-about-me seccion="sobreMi" />
         <app-my-services seccion="servicios" />
       </app-navegacion-tabs>
