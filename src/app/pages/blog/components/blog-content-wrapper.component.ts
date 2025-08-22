@@ -19,6 +19,7 @@ import { SeeMoreService } from '../services/see-more.service';
       <div
         class="content-inner"
         [class.collapsed]="!isExpanded()"
+        [attr.data-content-collapsed]="!isExpanded()"
         [style.max-height]="maxHeight()">
         <ng-content></ng-content>
 
@@ -182,7 +183,6 @@ export class BlogContentWrapperComponent implements AfterViewInit, AfterViewChec
 
   protected toggleExpanded(): void {
     const entryId = this.entryId();
-    const currentState = this.seeMoreService.isExpanded(entryId);
     this.seeMoreService.toggleExpanded(entryId);
   }
 }

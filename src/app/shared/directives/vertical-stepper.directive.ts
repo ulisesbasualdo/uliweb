@@ -30,13 +30,14 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
   private resizeObs?: ResizeObserver;
   private clipResizeObs?: ResizeObserver;
   private scrollHandler?: () => void;
-  private windowResizeHandler?: () => void;
   private transitionEndHandler?: (e: TransitionEvent) => void;
   private stepCount = 0;
   private offsetLeft = 60;
   private mo?: MutationObserver;
   private overlayVisible = false;
   private visibilityDebounce?: number;
+  private isInitialized = false;
+  private initialStepSelectors: string[] = []; // Store selectors to track original steps
 
   // Helper: cumulative offsetTop relative to host
   private getOffsetTopTo(el: HTMLElement, ancestor: HTMLElement): number {
@@ -49,12 +50,93 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
     return y;
   }
 
-  // Helper: determine if an element is actually visible considering ancestor clipping (overflow hidden/auto/scroll)
+  // Helper: determine if an element exists and is connected to DOM
+  private isElementConnected(el: HTMLElement): boolean {
+    if (!el?.isConnected) return false;
+    const cs = window.getComputedStyle(el);
+    return cs.display !== 'none' && cs.visibility !== 'hidden';
+  }
+
+  // Helper: create a unique selector for an element to track it across DOM changes
+  private createElementSelector(el: HTMLElement): string {
+    const tagName = el.tagName.toLowerCase();
+    const id = el.id ? `#${el.id}` : '';
+    const classes = el.className ? `.${el.className.trim().split(/\s+/).join('.')}` : '';
+    const stepAttr = el.getAttribute('step') ? `[step="${el.getAttribute('step')}"]` : '[step]';
+
+    // Create a selector that's specific enough to identify this element
+    let selector = tagName + id + classes + stepAttr;
+
+    // If still not unique enough, add position-based selector
+    const parent = el.parentElement;
+    if (parent) {
+      const siblings = Array.from(parent.children).filter(child =>
+        child.tagName === el.tagName && child.hasAttribute('step')
+      );
+      if (siblings.length > 1) {
+        const index = siblings.indexOf(el);
+        selector += `:nth-of-type(${index + 1})`;
+      }
+    }
+
+    return selector;
+  }
+
+  // Helper: check if original steps are still present in DOM after initialization
+  private areInitialStepsPresent(): boolean {
+    if (!this.isInitialized || this.initialStepSelectors.length === 0) {
+      return true; // During initialization, don't be restrictive
+    }
+
+    // Simplified check: just verify if any step elements exist
+    // This is less aggressive than checking specific selectors
+    const currentSteps = this.host.querySelectorAll('[step]');
+    return currentSteps.length > 0;
+  }
+
+  // Helper: detect if any clipping ancestor (overflow != visible) currently clips its content
+  private isContentClipped(): boolean {
+    if (!this.stepElements.length) return false;
+
+    // First check if we're inside a collapsed blog content wrapper
+    if (this.isInsideCollapsedBlogWrapper()) {
+      return true;
+    }
+
+    // Check ancestors of the first step (sufficient, as collapsing wraps the whole group)
+    let node: HTMLElement | null = this.stepElements[0].parentElement;
+    while (node && node !== this.host.parentElement) {
+      const cs = window.getComputedStyle(node);
+      const clips = (val: string) => val !== 'visible';
+      if (clips(cs.overflow) || clips(cs.overflowX) || clips(cs.overflowY)) {
+        const client = node.clientHeight;
+        const scroll = node.scrollHeight;
+        if (scroll > client + 1) return true; // content is being clipped
+      }
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  // Helper: check if the stepper is inside a collapsed blog content wrapper
+  private isInsideCollapsedBlogWrapper(): boolean {
+    let node: HTMLElement | null = this.host;
+    while (node) {
+      if (node.hasAttribute('data-content-collapsed') && node.getAttribute('data-content-collapsed') === 'true') {
+        console.log('🚫 Found collapsed blog wrapper, hiding stepper');
+        return true;
+      }
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  // Helper: determine if an element is actually visible considering ancestor clipping
   private isElementActuallyVisible(el: HTMLElement): boolean {
     if (!el.isConnected) return false;
     let rect = el.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return false;
-    // Early exit on element styles
+
     const selfCs = window.getComputedStyle(el);
     if (selfCs.display === 'none' || selfCs.visibility === 'hidden') return false;
 
@@ -85,33 +167,14 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
     return true;
   }
 
-  // Helper: detect if any clipping ancestor (overflow != visible) currently clips its content
-  private isContentClipped(): boolean {
-    if (!this.stepElements.length) return false;
-    // Check ancestors of the first step (sufficient, as collapsing wraps the whole group)
-    let node: HTMLElement | null = this.stepElements[0].parentElement;
-    while (node && node !== this.host.parentElement) {
-      const cs = window.getComputedStyle(node);
-      const clips = (val: string) => val !== 'visible';
-      if (clips(cs.overflow) || clips(cs.overflowX) || clips(cs.overflowY)) {
-        const client = node.clientHeight;
-        const scroll = node.scrollHeight;
-        if (scroll > client + 1) return true; // content is being clipped
-      }
-      node = node.parentElement;
-    }
-    return false;
-  }
-
   // Observe clipping ancestors so we react to collapse/expand size changes
   private observeClippingAncestors() {
     if (typeof ResizeObserver === 'undefined') return;
     this.clipResizeObs ??= new ResizeObserver(() => {
-      // Re-evaluate visibility when a clipping ancestor resizes
       this.evaluateVisibility();
     });
-    // Reset observed elements
     try { this.clipResizeObs.disconnect(); } catch {}
+
     const toObserve = new Set<HTMLElement>();
     for (const step of this.stepElements) {
       let node: HTMLElement | null = step.parentElement;
@@ -136,30 +199,32 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
     // Ensure layout is settled before measuring positions
     requestAnimationFrame(() => {
       const host: HTMLElement = (this.host = this.el.nativeElement as HTMLElement);
-  const stepNodeList = host.querySelectorAll<HTMLElement>('[step]');
-  const stepCount = (this.stepCount = stepNodeList.length);
+      const stepNodeList = host.querySelectorAll<HTMLElement>('[step]');
+      const stepCount = (this.stepCount = stepNodeList.length);
 
-  // Overlay must superimpose above content without changing layout
-  this.renderer.setStyle(host, 'position', 'relative');
+      // Overlay must superimpose above content without changing layout
+      this.renderer.setStyle(host, 'position', 'relative');
 
-  const overlay = this.renderer.createElement('div') as HTMLElement;
+      const overlay = this.renderer.createElement('div') as HTMLElement;
       this.overlay = overlay;
       this.renderer.setStyle(overlay, 'position', 'absolute');
-  // Compute and store the left offset (how much to shift left from host's left edge)
-  this.offsetLeft = Number.isFinite(Number(this.separateLeft)) ? Math.max(0, Number(this.separateLeft)) : this.gutter;
-  // Ensure the overlay is wide enough to contain the rail and dots; overflow is visible anyway
-  this.renderer.setStyle(overlay, 'width', `${this.offsetLeft + 60}px`);
+      // Compute and store the left offset (how much to shift left from host's left edge)
+      this.offsetLeft = Number.isFinite(Number(this.separateLeft)) ? Math.max(0, Number(this.separateLeft)) : this.gutter;
+      // Ensure the overlay is wide enough to contain the rail and dots; overflow is visible anyway
+      this.renderer.setStyle(overlay, 'width', `${this.offsetLeft + 60}px`);
       this.renderer.setStyle(overlay, 'pointer-events', 'none');
-  this.renderer.setStyle(overlay, 'z-index', '9999');
-  this.renderer.setStyle(overlay, 'overflow', 'visible');
-  // Append to document body to avoid clipping by ancestor overflow/stacking contexts
-  const doc = this.host.ownerDocument || document;
-  this.renderer.appendChild(doc.body, overlay);
-  // Position overlay relative to the page
-  this.updateOverlayPosition();
+      this.renderer.setStyle(overlay, 'z-index', '9999');
+      this.renderer.setStyle(overlay, 'overflow', 'visible');
+      // Append to document body to avoid clipping by ancestor overflow/stacking contexts
+      const doc = this.host.ownerDocument || document;
+      this.renderer.appendChild(doc.body, overlay);
+      // Position overlay relative to the page
+      this.updateOverlayPosition();
 
       if (stepCount) {
         this.stepElements = Array.from(stepNodeList);
+        // Store selectors for initial steps to track them later
+        this.initialStepSelectors = this.stepElements.map(el => this.createElementSelector(el));
         this.stepPositions = this.stepElements.map((el) => this.getOffsetTopTo(el, host));
         this.minY = Math.min(...this.stepPositions);
         this.maxY = Math.max(...this.stepPositions);
@@ -231,71 +296,112 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
         });
       }
 
-  // Overlay already appended to body
-
-  // Start hidden; visibility controlled by DOM presence of steps
-  this.setOverlayVisible(false);
-
-  // Setup IntersectionObserver to toggle dot active state with bottom gap of 100px
-      this.setupIntersectionObserver();
-      // Setup resize observer to recompute layout when content changes
-      this.setupResizeObserver();
-      // Setup scroll handler for continuous progress
-      this.setupScrollHandler();
-      // Observe DOM mutations to decide visibility and rebuild when all steps are present
+      // Setup observers and handlers first
+      this.setupObservers();
       this.setupMutationObserver();
-      // Initial evaluation
-      this.evaluateVisibility();
+
+      // Ensure stepper shows immediately if steps are found
+      // Use setTimeout to allow any pending DOM updates to complete
+      setTimeout(() => {
+        this.evaluateVisibility();
+        // Force a second evaluation after a brief delay to catch any late DOM changes
+        setTimeout(() => {
+          this.evaluateVisibility();
+          // Mark as initialized after the initial evaluations
+          this.isInitialized = true;
+        }, 100);
+      }, 0);
     });
   }
 
   private setupMutationObserver() {
     if (this.mo) this.mo.disconnect();
     this.mo = new MutationObserver((mutations) => {
-      // Check if any mutation affects [step] elements specifically
       let shouldRecheck = false;
+
       for (const mutation of mutations) {
-        if (mutation.type === 'childList') {
-          // Check added nodes for [step] elements
-          mutation.addedNodes.forEach(node => {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-              const element = node as Element;
-              if (element.hasAttribute('step') || element.querySelector('[step]')) {
-                shouldRecheck = true;
-              }
-            }
-          });
-          // Check removed nodes for [step] elements
-          mutation.removedNodes.forEach(node => {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-              const element = node as Element;
-              if (element.hasAttribute('step') || element.querySelector('[step]')) {
-                shouldRecheck = true;
-              }
-            }
-          });
-        } else if (mutation.type === 'attributes' && mutation.attributeName === 'step') {
+        if (this.shouldRecheckForMutation(mutation)) {
           shouldRecheck = true;
+          break;
         }
       }
 
       if (shouldRecheck) {
-        // Debounce rapid DOM changes
-        if (this.visibilityDebounce) {
-          clearTimeout(this.visibilityDebounce);
-        }
-        this.visibilityDebounce = (setTimeout(() => {
-          this.evaluateVisibility();
-        }, 50) as unknown) as number;
+        this.debouncedEvaluateVisibility();
       }
     });
-    // Observe subtree for child additions/removals and step attribute changes
+
+    // Observe the host element
     this.mo.observe(this.host, {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['step', 'class', 'style', 'hidden']
+      attributeFilter: ['step', 'class', 'style', 'hidden', 'data-content-collapsed']
     });
+
+    // Also observe ancestors for blog wrapper state changes
+    this.observeBlogWrapperAncestors();
+  }
+
+  private observeBlogWrapperAncestors() {
+    let node: HTMLElement | null = this.host.parentElement;
+    while (node && node !== document.body) {
+      // If we find a content-inner element, observe it for attribute changes
+      if (node.classList.contains('content-inner')) {
+        this.mo?.observe(node, {
+          attributes: true,
+          attributeFilter: ['data-content-collapsed', 'class']
+        });
+        console.log('👀 Observing blog wrapper ancestor for collapse/expand');
+        break;
+      }
+      node = node.parentElement;
+    }
+  }
+
+  private shouldRecheckForMutation(mutation: MutationRecord): boolean {
+    if (mutation.type === 'childList') {
+      return this.hasStepElementChanges(mutation);
+    }
+
+    if (mutation.type === 'attributes') {
+      const attrName = mutation.attributeName;
+      return attrName === 'step' || attrName === 'class' || attrName === 'style' || attrName === 'data-content-collapsed';
+    }
+
+    return false;
+  }
+
+  private hasStepElementChanges(mutation: MutationRecord): boolean {
+    const nodesToCheck = [...mutation.addedNodes, ...mutation.removedNodes];
+
+    for (const node of nodesToCheck) {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as Element;
+        if (element.hasAttribute('step') || element.querySelector('[step]')) {
+          // Special handling for removed step elements when initialized
+          if (this.isInitialized && mutation.removedNodes.length > 0) {
+            this.handleStepRemoval();
+          }
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private handleStepRemoval(): void {
+    if (!this.areInitialStepsPresent()) {
+      this.setOverlayVisible(false);
+    }
+  }
+
+  private debouncedEvaluateVisibility(): void {
+    if (this.visibilityDebounce) clearTimeout(this.visibilityDebounce);
+    this.visibilityDebounce = (setTimeout(() => {
+      this.evaluateVisibility();
+    }, 50) as unknown) as number;
   }
 
   private setOverlayVisible(visible: boolean) {
@@ -306,27 +412,30 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
 
   private evaluateVisibility() {
     const allNodes = Array.from(this.host.querySelectorAll<HTMLElement>('[step]'));
-    const visibleNodes = allNodes.filter((el) => this.isElementActuallyVisible(el));
-    const totalCount = allNodes.length;
-    const visibleCount = visibleNodes.length;
 
     // Hide if no steps found at all
-    if (totalCount === 0) {
+    if (allNodes.length === 0) {
       this.setOverlayVisible(false);
       return;
     }
 
-    // Show if at least one step is visible (don't require all steps)
-    if (visibleCount > 0) {
-      // Use all available steps (visible ones if any, otherwise all found)
-      this.stepElements = visibleNodes.length ? visibleNodes : allNodes;
+    // Simplified logic: just check if we have steps that are connected to DOM
+    const connectedSteps = allNodes.filter(el => this.isElementConnected(el));
 
-      // Check if content is actively clipped - if so, hide
-      if (this.isContentClipped()) {
+    if (connectedSteps.length > 0) {
+      this.stepElements = connectedSteps;
+
+      // Only hide if content is actively clipped AND no steps are actually visible
+      // This handles the collapse/expand functionality from BlogContentWrapper
+      const isClipped = this.isContentClipped();
+      const hasVisibleSteps = this.stepElements.some(el => this.isElementActuallyVisible(el));
+
+      if (isClipped && !hasVisibleSteps) {
         this.setOverlayVisible(false);
         return;
       }
 
+      // Show the stepper
       this.setOverlayVisible(true);
       this.rebuildGraphics(false);
       this.observeClippingAncestors();
@@ -423,8 +532,8 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
         this.dots.push(stepPoint);
       });
 
-      // Re-setup IO to observe the updated step list
-      this.setupIntersectionObserver();
+      // Re-setup observers for the updated step list
+      this.setupObservers();
     } else {
       // Reposition existing dots
       const dotRadius = (parseFloat(this.dots[0]?.style.width || '20') || 20) / 2;
@@ -439,49 +548,29 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
     this.updateProgressFromViewport();
   }
 
-  private setupIntersectionObserver() {
-    if (this.io) {
-      this.io.disconnect();
-    }
-    // Bottom rootMargin of -100px ensures activation happens only when the element is above viewport bottom - 100px
-    this.io = new IntersectionObserver(
-      (entries) => {
-  // Only update progress; dot activation will be based on the progress line touching them
-        this.updateProgressFromViewport();
-      },
-      { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0 }
-    );
-
-    // Observe each step element
+  private setupObservers() {
+    // Intersection Observer for progress updates
+    if (this.io) this.io.disconnect();
+    this.io = new IntersectionObserver(() => {
+      this.updateProgressFromViewport();
+    }, { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0 });
     this.stepElements.forEach((el) => this.io!.observe(el));
-  }
 
-  private setupResizeObserver() {
+    // Resize Observer for layout changes
     if (typeof ResizeObserver !== 'undefined') {
       this.resizeObs = new ResizeObserver(() => {
-        // Recompute positions and redraw
         this.recomputeLayout();
-        // Re-evaluate visibility to react to collapse/expand transitions
         this.evaluateVisibility();
       });
-  this.resizeObs.observe(this.host);
-    } else {
-      // Fallback: listen to window resize
-      this.windowResizeHandler = () => {
-        this.recomputeLayout();
-        this.evaluateVisibility();
-      };
-      window.addEventListener('resize', this.windowResizeHandler);
+      this.resizeObs.observe(this.host);
     }
-  }
 
-  private setupScrollHandler() {
-    const handler = () => {
+    // Scroll handler for progress updates
+    this.scrollHandler = () => {
       this.updateOverlayPosition();
       this.updateProgressFromViewport();
     };
-    this.scrollHandler = handler;
-    window.addEventListener('scroll', handler, { passive: true });
+    window.addEventListener('scroll', this.scrollHandler, { passive: true });
 
     // Listen for transition end (e.g., max-height on collapsed container) to re-check visibility
     this.transitionEndHandler = () => {
@@ -491,12 +580,10 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
     this.host.addEventListener('transitionend', this.transitionEndHandler);
   }
 
-  private readonly recomputeLayoutBound = () => this.recomputeLayout();
-
   private recomputeLayout() {
     // Recalculate step positions and adjust lines/dots
-  const host = this.host;
-  this.stepPositions = this.stepElements.map((el) => this.getOffsetTopTo(el, host));
+    const host = this.host;
+    this.stepPositions = this.stepElements.map((el) => this.getOffsetTopTo(el, host));
     this.minY = Math.min(...this.stepPositions);
     this.maxY = Math.max(...this.stepPositions);
 
@@ -600,12 +687,6 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
       this.resizeObs.disconnect();
       this.resizeObs = undefined;
     }
-    if (this.windowResizeHandler) {
-      window.removeEventListener('resize', this.windowResizeHandler);
-      this.windowResizeHandler = undefined;
-    } else {
-      window.removeEventListener('resize', this.recomputeLayoutBound);
-    }
     if (this.scrollHandler) {
       window.removeEventListener('scroll', this.scrollHandler);
       this.scrollHandler = undefined;
@@ -619,6 +700,6 @@ export class VerticalStepperDirective implements AfterViewInit, OnDestroy {
       this.clipResizeObs = undefined;
     }
     // Remove overlay from DOM
-  this.overlay?.parentElement?.removeChild(this.overlay);
+    this.overlay?.parentElement?.removeChild(this.overlay);
   }
 }
