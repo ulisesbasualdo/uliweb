@@ -7,6 +7,7 @@ import { Type } from '@angular/core';
 export interface BlogEntryConfig {
   category: string;
   title: string;
+  needsWrap: boolean;
   date: Date;
 }
 

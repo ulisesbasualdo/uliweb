@@ -1,0 +1,233 @@
+// ======================
+// === TABLE SYSTEM
+// ======================
+
+// Base table
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  vertical-align: top;
+  border-color: #dee2e6;
+
+  th,
+  td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: inherit;
+  }
+
+  th {
+    font-weight: 600;
+    color: #495057;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+  }
+}
+
+// Table variants
+.table-striped {
+  tbody tr:nth-of-type(odd) > td {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+
+  th,
+  td {
+    border: 1px solid #dee2e6;
+  }
+}
+
+.table-borderless {
+  th,
+  td {
+    border: 0;
+  }
+}
+
+// Table sizes
+.table-sm {
+  th,
+  td {
+    padding: 0.25rem;
+  }
+}
+
+.table-lg {
+  th,
+  td {
+    padding: 1rem;
+  }
+}
+
+// Dark table
+.table-dark {
+  color: #fff;
+  background-color: #212529;
+  border-color: #32383e;
+
+  th,
+  td {
+    border-color: #32383e;
+  }
+
+  th {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+  }
+
+  tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.075);
+  }
+
+  &.table-striped {
+    tbody tr:nth-of-type(odd) > td {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &.table-bordered {
+    border-color: #32383e;
+  }
+}
+
+// Responsive table
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  .table {
+    margin-bottom: 0;
+    min-width: 600px;
+  }
+}
+
+// Responsive breakpoints
+@media (max-width: 575.98px) {
+  .table-responsive-sm {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .table-responsive-md {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .table-responsive-lg {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .table-responsive-xl {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 1399.98px) {
+  .table-responsive-xxl {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+// Table color variants
+.table-primary {
+  --bs-table-bg: #cfe2ff;
+  --bs-table-striped-bg: #c5d9f5;
+  --bs-table-striped-color: #000;
+  --bs-table-active-bg: #bacfea;
+  --bs-table-active-color: #000;
+  --bs-table-hover-bg: #bfd1eb;
+  --bs-table-hover-color: #000;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+.table-success {
+  --bs-table-bg: #d1e7dd;
+  --bs-table-striped-bg: #c7dcd3;
+  --bs-table-striped-color: #000;
+  --bs-table-active-bg: #bcd2c8;
+  --bs-table-active-color: #000;
+  --bs-table-hover-bg: #c1d6cc;
+  --bs-table-hover-color: #000;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+.table-danger {
+  --bs-table-bg: #f8d7da;
+  --bs-table-striped-bg: #ecccce;
+  --bs-table-striped-color: #000;
+  --bs-table-active-bg: #dfc2c4;
+  --bs-table-active-color: #000;
+  --bs-table-hover-bg: #e5c7ca;
+  --bs-table-hover-color: #000;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+.table-warning {
+  --bs-table-bg: #fff3cd;
+  --bs-table-striped-bg: #f2e7c3;
+  --bs-table-striped-color: #000;
+  --bs-table-active-bg: #e6dbb9;
+  --bs-table-active-color: #000;
+  --bs-table-hover-bg: #ece1be;
+  --bs-table-hover-color: #000;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+.table-info {
+  --bs-table-bg: #d1ecf1;
+  --bs-table-striped-bg: #c7e1e6;
+  --bs-table-striped-color: #000;
+  --bs-table-active-bg: #bcd6db;
+  --bs-table-active-color: #000;
+  --bs-table-hover-bg: #c1dbe1;
+  --bs-table-hover-color: #000;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+// Caption
+.table caption {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: #6c757d;
+  text-align: left;
+  caption-side: bottom;
+}
+
+// ======================
+// === FIN TABLE SYSTEM
+// ======================

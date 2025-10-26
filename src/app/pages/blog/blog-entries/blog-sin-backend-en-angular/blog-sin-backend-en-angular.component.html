@@ -1,21 +1,13 @@
-<article appVerticalStepper
-[separateLeft]="50"
-  [startStep]=20
-  verticalLineNeonColor="#1FFFCE"
-  stepColor="yellow"
-  finalStepColor="#80FF1F"
+<article
   class="blog-entry"
 >
   <header class="hero-section">
-    <!-- <div class="hero-content">
-      <h1>Cómo Crear un Blog sin Backend en Angular</h1>
-    </div> -->
     <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
   </header>
 
   <div class="content">
     <section class="intro">
-      <h2>💡 Problema y Solución Propuesta</h2>
+      <h2>💡 Descripción</h2>
       <p>Quería crear un blog, pero que cada entrada pueda personalizarla a mi gusto, para eso
         anulé la idea de tener un administrador donde escribir posteos de blog y pensé en esta
         solución:
@@ -78,7 +70,7 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section step step3 class="step-auto-register" id="auto-register">
+    <section step step3 class="automation" id="auto-register">
       <h2>🔗 Paso 3: Auto-Registro</h2>
       <p>Creamos el archivo que importa index.ts donde suceden todas las importaciones de los componentes que son entradas del blog:</p>
 
@@ -105,7 +97,7 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section step step5 class="step-service-usage" id="blog-component">
+    <section step step5 class="automation" id="blog-component">
       <h2>🔄 Paso 5: Cómo Usar el Servicio (Blog Component)</h2>
       <p>Una vez que tenemos nuestro servicio, necesitamos usarlo en un componente para mostrar las entradas.
          Aquí está el ejemplo real de cómo se implementa en el componente principal del blog:</p>
@@ -118,19 +110,9 @@ src/app/pages/blog/
         </app-code-shower>
       </div>
 
-      <div class="service-usage-note">
-        <h4>🔑 Puntos Clave del Uso del Servicio:</h4>
-        <ul>
-          <li><strong>Inyección:</strong> <code>inject(BlogService)</code> - Angular moderno sin constructor</li>
-          <li><strong>Categories:</strong> <code>blogService.categories()</code> - Obtiene todas las categorías disponibles</li>
-          <li><strong>Entries por Categoría:</strong> <code>blogService.getEntriesByCategory(category)</code> - Filtra entradas</li>
-          <li><strong>NgComponentOutlet:</strong> Renderiza dinámicamente cada componente de entrada</li>
-          <li><strong>&#64;defer:</strong> Carga diferida para mejor performance</li>
-        </ul>
-      </div>
     </section>
 
-    <section class="step-3">
+    <section step step6 class="step-3">
       <h2>📝 Paso 6: Crear una Entrada (Componente)</h2>
       <p>Cada entrada es un componente independiente al
         que debemos agregarle el decorador @BlogEntry</p>
@@ -144,7 +126,7 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section class="manual-step">
+    <section step step7 class="automation">
       <h2>Paso 7: Registro Manual</h2>
       <p>Luego se explicará cómo automatizar lo siguiente, sin embargo la
         forma primitiva cual hombre de las cavernas es importar y
@@ -160,7 +142,7 @@ src/app/pages/blog/
 
     </section>
 
-    <section class="automation" id="new-blog-component">
+    <section step step8 class="automation" id="new-blog-component">
       <h2>🤖 Paso 8 (opcional): Script de Creación Automática</h2>
       <p><strong>¿Qué quiero lograr?</strong> Quiero poder generar un componente listo como entrada de blog desde la consola,
         ya con su decorador aplicado y, además, que el archivo index.ts se regenere solo,
@@ -176,9 +158,9 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section class="automation-generate">
+    <section step step9 class="automation">
       <h2>🔄 Paso 9: Script de Auto-generación de Index</h2>
-      <p>Creamos un script JavaScript que escanee todos los componentes existentes dentro de blog-entry y genere automáticamente el archivo index.ts:</p>
+      <p>Creamos un script de JavaScript que escanee todos los componentes existentes dentro de la carpeta blog-entries y genere automáticamente el archivo index.ts:</p>
 
       <div class="automation-steps">
         <div class="automation-step" id="generate-index">
@@ -188,10 +170,11 @@ src/app/pages/blog/
             [code]="javascriptCode"
             language="javascript">
           </app-code-shower>
+
         </div>
 
         <div class="automation-step">
-          <h3>3️⃣ Resultado: src/app/pages/blog/blog-entries/index.ts Generado</h3>
+          <h3>Resultado: src/app/pages/blog/blog-entries/index.ts Generado</h3>
           <p>Así queda el archivo index.ts automáticamente generado:</p>
           <app-code-shower
             [code]="generatedIndexCode"
@@ -201,13 +184,23 @@ src/app/pages/blog/
       </div>
     </section>
 
-    <section class="terminal-usage">
+    <section step step10 class="automation">
       <h2>💻 Paso 10: Uso por Terminal</h2>
       <p>Una vez que tienes los scripts configurados, crear nuevas entradas es súper simple:</p>
 
       <div class="terminal-steps">
+
         <div class="terminal-step">
-          <h3>1️⃣ Crear nueva entrada</h3>
+          <h3>1️⃣ Configuración en package.json</h3>
+          <p>Agrega estos scripts al archivo package.json</p>
+          <app-code-shower
+            [code]="packageJsonCode"
+            language="json">
+          </app-code-shower>
+        </div>
+
+        <div class="terminal-step">
+          <h3>2️⃣ Crear nueva entrada</h3>
           <app-code-shower
             code="npm run new:blog mi-nueva-entrada"
             language="powershell">
@@ -222,7 +215,7 @@ src/app/pages/blog/
         </div>
 
         <div class="terminal-step">
-          <h3>2️⃣ Regenerar índice (si es necesario)</h3>
+          <h3>3️⃣ Regenerar índice (si es necesario)</h3>
           <app-code-shower
             code="npm run generate:blog-index"
             language="powershell">
@@ -230,43 +223,7 @@ src/app/pages/blog/
           <p class="terminal-description">Por si necesitas regenerar manualmente el index.ts</p>
         </div>
 
-        <div class="terminal-step">
-          <h3>3️⃣ Configuración en package.json</h3>
-          <p>Agrega estos scripts al archivo package.json</p>
-          <app-code-shower
-            [code]="packageJsonCode"
-            language="json">
-          </app-code-shower>
-        </div>
-      </div>
-    </section>
 
-    <section class="benefits">
-      <h2>✨ Beneficios del Sistema</h2>
-      <div class="benefits-grid">
-        <div class="benefit">
-          <span class="icon">🚀</span>
-          <h3>Sin Backend</h3>
-          <p>Sin bases de datos, sin APIs, solo Angular puro, lo que significa que puedes subirlo a cualquier servidor</p>
-        </div>
-        <div class="benefit">
-          <span class="icon">⚡</span>
-          <h3>Amigable con la IA</h3>
-          <p>Y sí, ya que tenés tu componente único por entrada,
-            le podés pedir a la IA que te arme un artículo de la gran siete en ese componente, sobre el tema que quieras dar.
-            Y nunca vas a romper el proyecto.
-          </p>
-        </div>
-        <div class="benefit">
-          <span class="icon">🔧</span>
-          <h3>Automatizado</h3>
-          <p>Un comando y tienes nueva entrada lista</p>
-        </div>
-        <div class="benefit">
-          <span class="icon">🎨</span>
-          <h3>Flexible</h3>
-          <p>Cada entrada puede tener su propio diseño, su propia lógica, cada entrada puede ser un mundo aparte</p>
-        </div>
       </div>
     </section>
 

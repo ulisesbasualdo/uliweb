@@ -11,17 +11,12 @@ import { Component } from '@angular/core';
       </p>
       <div class="foto-sobre-mi">
         <img src="/img/sobre-mi-2.jpg" alt="me" />
-        <p class="leyenda-foto">El ingrediente secreto es constancia</p>
       </div>
       <p class="descripcion-adicional">
         Actualmente trabajo profesionalmente como desarrollador frontend con la tecnología Angular y brindo clases particulares del mismo
         framework para quienes quieren empezar de cero o ya tienen un conocimiento.
       </p>
       <div class="firma">Uli B.</div>
-      <div class="redes-sociales">
-        <a href="#" class="red-social">TikTok</a>
-        <a href="#" class="red-social">YouTube</a>
-      </div>
   `,
   styles: `
     /* Estilos de la sección sobre mí */

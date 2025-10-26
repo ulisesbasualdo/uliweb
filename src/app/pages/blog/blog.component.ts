@@ -9,7 +9,7 @@ import { BlogContentWrapperComponent } from './components/blog-content-wrapper.c
   template: `
     @if (blogService.categories().length === 0) {
       <div class="estado-vacio">
-        <h2>No hay entradas de blog disponibles</h2>
+        <h2>No hay entradas de blog disponibles  </h2>
         <p>Agrega componentes con el decorador @BlogEntry para verlos aquí.</p>
       </div>
     } @else {
@@ -23,12 +23,12 @@ import { BlogContentWrapperComponent } from './components/blog-content-wrapper.c
                 <img [src]="'img/me2.png'" alt="Perfil" />
                 <div>
                   <p class="nombre-posteo">Uli B.</p>
-                  <p class="fecha-posteo">{{ entry.date | date:'dd MMMM yyyy' }}</p>
+                  <p class="fecha-posteo">{{ entry.date | date:"dd 'de' MMMM 'de' yyyy" }}</p>
                 </div>
               </div>
 
               <h2 class="titulo-posteo">{{ entry.title }}</h2>
-
+              @if(entry.needsWrap){
               <app-blog-content-wrapper [entryId]="entry.id">
                 <div class="contenido-componente">
                   @defer {
@@ -37,7 +37,16 @@ import { BlogContentWrapperComponent } from './components/blog-content-wrapper.c
                     <p>Cargando contenido...</p>
                   }
                 </div>
-              </app-blog-content-wrapper>
+              </app-blog-content-wrapper>}
+              @if(!entry.needsWrap){
+                <div class="contenido-componente">
+                  @defer {
+                    <ng-container [ngComponentOutlet]="entry.component"></ng-container>
+                  } @loading {
+                    <p>Cargando contenido...</p>
+                  }
+                </div>
+              }
             </div>
           }
         </section>
@@ -159,4 +168,5 @@ import { BlogContentWrapperComponent } from './components/blog-content-wrapper.c
 })
 export class BlogComponent {
   protected readonly blogService = inject(BlogService);
+
 }

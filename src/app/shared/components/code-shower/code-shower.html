@@ -1,0 +1,19 @@
+<div class="container">
+
+  <div class="header">
+    <span class="language-tag">{{language() | titlecase }}</span>
+    <button class="copy-btn" (click)="copyToClipboard()" [class.copied]="isCodeCopied()">
+      {{isCodeCopied() ? '✓ copiado' : '📋 copiar'}}
+    </button>
+  </div>
+
+  <div class="wrapper">
+    <div class="line-numbers">
+      @for(lineNumber of lineNumbers();track $index){
+        <span class="line-number">{{ lineNumber }}</span>
+      }
+    </div>
+    <pre class="code-content"><code [innerHTML]="processedCode()"></code></pre>
+  </div>
+
+</div>

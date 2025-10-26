@@ -95,6 +95,11 @@ import { FormsModule } from '@angular/forms';
       .contenido-opcion {
         padding: 1rem 0;
       }
+      @media (max-width: 500px) {
+        .contenido-opcion {
+          text-align: center;
+        }
+      }
 
       .opcion-email,
       .opcion-whatsapp,
@@ -104,6 +109,14 @@ import { FormsModule } from '@angular/forms';
         gap: 1rem;
         align-items: center;
         justify-content: center;
+      }
+
+      @media (max-width: 500px) {
+        .opcion-email,
+        .opcion-whatsapp,
+        .opcion-linkedin {
+          flex-direction: column;
+        }
       }
 
       input,
@@ -132,6 +145,12 @@ import { FormsModule } from '@angular/forms';
         cursor: pointer;
         transition: all 0.3s ease;
         align-self: flex-start;
+      }
+      @media (max-width: 500px) {
+        .boton-enviar,
+        .boton-linkedin {
+          align-self: center;
+        }
       }
 
       .boton-enviar:hover,

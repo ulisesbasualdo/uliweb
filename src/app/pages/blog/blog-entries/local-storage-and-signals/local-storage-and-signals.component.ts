@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BlogEntry } from '../../decorators/blog-entry.decorator';
 
-@BlogEntry({
-  category: 'Angular',
-  title: 'Local Storage y Signals',
-  date: new Date('2024-05-15'),
-})
+// @BlogEntry({
+//   category: 'Angular',
+//   title: 'Local Storage y Signals',
+//   needsWrap: false,
+//   date: new Date('2024-05-15'),
+// })
 @Component({
   selector: 'app-local-storage-and-signals',
   imports: [],
   template: `
     <div class="content">
       <p>Este artículo explica cómo usar Local Storage con Signals para manejo de estado persistente.</p>
-      <p>Los signals proporcionan una forma reactiva de manejar el estado...</p>
+      <p>Entrada en construcción...</p>
     </div>
   `,
   styles: `

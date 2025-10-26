@@ -55,7 +55,7 @@ import { SeeMoreService } from '../services/see-more.service';
 
     .content-inner.collapsed {
       overflow: hidden;
-      border-radius:30px;
+      border-radius: 30px;
     }
 
     .fade-overlay {
@@ -101,6 +101,7 @@ import { SeeMoreService } from '../services/see-more.service';
       font-size:.9rem;
       text-transform:uppercase;
       letter-spacing:.5px;
+      text-wrap: nowrap;
     }
 
     .see-less-btn {

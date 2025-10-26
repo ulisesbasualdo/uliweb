@@ -1,5 +1,7 @@
 /* Estilos globales de la aplicación */
+@use './app/ui/styles/index.scss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap');
+
 
 /* Reseteo básico */
 * {
@@ -8,10 +10,14 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+}
+
 body {
   background-color: #121212;
   color: #ffffff;
-  font-family: 'Inter', sans-serif;
   line-height: 1.6;
   min-height: 100vh;
 }
@@ -90,4 +96,14 @@ button {
 
 .animacion-entrada {
   animation: fadeIn 0.5s ease-out, slideUp 0.5s ease-out;
+}
+
+.warning {
+  color: #ff4949;
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 12px;
+  }
 }

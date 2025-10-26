@@ -55,6 +55,12 @@
   border-style: solid;
 }
 
+@media (max-width: 768px) {
+  .cover-image {
+    width: 100%;
+  }
+}
+
 .hero-content {
   position: relative;
   text-align: center;
