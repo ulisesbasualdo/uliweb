@@ -1,9 +1,12 @@
 <article
-  class="blog-entry"
+  appContentWrapper
+  [entryId]="entryId"
+  (isCollapsed)="onWrapperCollapsed($event)"
 >
-  <header class="hero-section">
-    <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
-  </header>
+  <div appUliVerticalStepper [visible]="stepperVisible()" class="blog-entry">
+    <header class="hero-section">
+      <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
+    </header>
 
   <div class="content">
     <section class="intro">
@@ -13,9 +16,6 @@
         solución:
         Usar una lógica para convertir un <strong>componente de Angular en entrada de blog</strong> permitiéndome así personalizar a niveles inimaginables cada entrada.</p>
     </section>
-
-
-
 
     <section class="architecture">
       <h2>🏗️ Arquitectura del Sistema</h2>
@@ -43,8 +43,8 @@ src/app/pages/blog/
        </code></pre>
       </div>
     </section>
-    <section step step1 class="step-1" id="blog-entry-decorator">
-      <h2>🎯 Paso 1: El Decorador @BlogEntry</h2>
+    <section  class="step-1" id="blog-entry-decorator">
+      <h2 step step1>🎯 Paso 1: El Decorador @BlogEntry</h2>
       <p>Creamos un decorador, un ejemplo de decorador es el clásico
       <strong>@Component</strong> de angular, esta vez crearemos uno para nosotros</p>
 
@@ -232,5 +232,6 @@ src/app/pages/blog/
       <p>Este sistema combina lo mejor de Angular moderno: <strong>signals</strong>, <strong>decoradores</strong>, <strong>componentes standalone</strong> y <strong>automatización</strong> para crear un blog completamente funcional sin necesidad de backend.</p>
       <p class="highlight">¡Perfecto para portfolios, documentación técnica o blogs personales!</p>
     </footer>
+    </div>
   </div>
 </article>

@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
 import { BlogEntry } from '../../decorators/blog-entry.decorator';
 import { CodeShower } from '../../../../shared/components/code-shower/code-shower';
+import { VerticalStepper } from '../../../../shared/directives/vertical-stepper';
+import { ContentWrapperDirective } from '../../directives/content-wrapper';
+import { BlogService } from '../../services/blog.service';
 
 @BlogEntry({
   category: 'Angular',
@@ -10,12 +13,29 @@ import { CodeShower } from '../../../../shared/components/code-shower/code-showe
 })
 @Component({
   selector: 'app-blog-sin-backend-en-angular',
-  imports: [CodeShower],
+  imports: [CodeShower, VerticalStepper, ContentWrapperDirective],
   templateUrl: './blog-sin-backend-en-angular.component.html',
   styleUrl: './blog-sin-backend-en-angular.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogSinBackendEnAngularComponent {
+  private readonly blogService = inject(BlogService);
+
+  // Signal para controlar la visibilidad del stepper
+  protected stepperVisible = signal(true);
+
+  // Obtener el ID de esta entrada del blog
+  protected get entryId(): number {
+    const entry = this.blogService.allEntries().find(
+      e => e.component === BlogSinBackendEnAngularComponent
+    );
+    return entry?.id ?? 1;
+  }
+
+  // Método llamado cuando el wrapper cambia de estado
+  protected onWrapperCollapsed(isCollapsed: boolean): void {
+    this.stepperVisible.set(!isCollapsed);
+  }
 
   protected readonly decoratorCode = `export interface BlogEntryConfig {
   category: string;

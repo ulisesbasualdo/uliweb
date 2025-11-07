@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BlogService } from './services/blog.service';
 import { DatePipe, NgComponentOutlet } from '@angular/common';
-import { BlogContentWrapperComponent } from './components/blog-content-wrapper.component';
 
 @Component({
   selector: 'app-blog',
-  imports: [NgComponentOutlet, DatePipe, BlogContentWrapperComponent],
+  imports: [NgComponentOutlet, DatePipe],
   template: `
     @if (blogService.categories().length === 0) {
       <div class="estado-vacio">
@@ -28,25 +27,13 @@ import { BlogContentWrapperComponent } from './components/blog-content-wrapper.c
               </div>
 
               <h2 class="titulo-posteo">{{ entry.title }}</h2>
-              @if(entry.needsWrap){
-              <app-blog-content-wrapper [entryId]="entry.id">
-                <div class="contenido-componente">
-                  @defer {
-                    <ng-container [ngComponentOutlet]="entry.component"></ng-container>
-                  } @loading {
-                    <p>Cargando contenido...</p>
-                  }
-                </div>
-              </app-blog-content-wrapper>}
-              @if(!entry.needsWrap){
-                <div class="contenido-componente">
-                  @defer {
-                    <ng-container [ngComponentOutlet]="entry.component"></ng-container>
-                  } @loading {
-                    <p>Cargando contenido...</p>
-                  }
-                </div>
-              }
+              <div class="contenido-componente">
+                @defer {
+                  <ng-container [ngComponentOutlet]="entry.component"></ng-container>
+                } @loading {
+                  <p>Cargando contenido...</p>
+                }
+              </div>
             </div>
           }
         </section>
