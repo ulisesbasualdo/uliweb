@@ -30,7 +30,7 @@ import { AboutMeComponent } from './pages/about-me/about-me.component';
         <div class="perfil">
           <div class="circulo-perfil-contenedor">
             <div class="circulo-perfil">
-              <img [src]="'/img/me2.png'" alt="me" />
+              <img [src]="'img/me2.png'" alt="me" />
             </div>
           </div>
         </div>
