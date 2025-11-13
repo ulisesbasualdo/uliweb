@@ -20,21 +20,12 @@ import { BlogService } from '../../services/blog.service';
 })
 export class BlogSinBackendEnAngularComponent {
   private readonly blogService = inject(BlogService);
-
-  // Signal para controlar la visibilidad del stepper
   protected stepperVisible = signal(true);
-
-  // Obtener el ID de esta entrada del blog
   protected get entryId(): number {
     const entry = this.blogService.allEntries().find(
       e => e.component === BlogSinBackendEnAngularComponent
     );
     return entry?.id ?? 1;
-  }
-
-  // Método llamado cuando el wrapper cambia de estado
-  protected onWrapperCollapsed(isCollapsed: boolean): void {
-    this.stepperVisible.set(!isCollapsed);
   }
 
   protected readonly decoratorCode = `export interface BlogEntryConfig {

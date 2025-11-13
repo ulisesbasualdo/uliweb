@@ -1,0 +1,20 @@
+<svg
+  class="pattern-svg"
+  [attr.viewBox]="viewBox()"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  @for (tile of tiles(); track tile.index) {
+    <g stroke="blue" fill="none" stroke-width="0.8" [attr.transform]="'translate(' + tile.x + ',' + tile.y + ')'">
+      <g [attr.id]="'g2-' + tile.index">
+        <ellipse [attr.id]="'g1-' + tile.index" cx="50" cy="50" rx="37.5" ry="20"/>
+        <use [attr.href]="'#g1-' + tile.index" transform="rotate(30 50 50)"/>
+        <use [attr.href]="'#g1-' + tile.index" transform="rotate(60 50 50)"/>
+      </g>
+      <use [attr.href]="'#g2-' + tile.index" transform="rotate(90 50 50)"/>
+    </g>
+  }
+</svg>
+
+<div class="overlay"></div>

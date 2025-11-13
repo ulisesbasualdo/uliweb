@@ -12,7 +12,7 @@ import { BlogEntry } from '../../decorators/blog-entry.decorator';
   imports: [],
   template: `
     <p>
-      Con las teclas "windows" + "." se te abre un popup para insertar emojis
+      Con las teclas "windows" + "." se abre un popup para insertar emojis
     </p>
   `,
   styles: ``

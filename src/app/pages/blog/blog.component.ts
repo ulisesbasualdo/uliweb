@@ -14,8 +14,6 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
     } @else {
       @for (category of blogService.categories(); track category) {
         <section class="categoria-seccion">
-          <!-- <h2 class="categoria-titulo">{{ category }}</h2> -->
-
           @for (entry of blogService.getEntriesByCategory(category ?? ''); track entry.id) {
             <div class="posteo">
               <div class="encabezado-posteo">

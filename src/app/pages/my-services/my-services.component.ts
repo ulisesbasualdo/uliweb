@@ -5,17 +5,21 @@ import { Component } from '@angular/core';
   imports: [],
   template: `
     <div seccion="servicios">
-      <h2 class="titulo-servicios">Clases particulares de Angular</h2>
+      <h2 class="titulo-servicios">Mis Servicios</h2>
       <div class="lista-servicios">
         <div class="servicio">
           <div class="icono-servicio">💻</div>
-          <h3 class="titulo-servicio">Clases personalizadas</h3>
+          <h3 class="titulo-servicio">Clases Personalizadas</h3>
           <p class="descripcion-servicio">
-            Si tienes alguna duda con el código o estás trabado en algo, o bien no
-            sabes cómo desarrollar alguna funcionalidad, puedes contar con mis clases
-            donde te apoyaré para sacar esa feature lo más rápido posible, y sobre todo que
-            entiendas lo que desarrollamos. También brindo clases para aprender desde cero Angular,
-            desde el punto que no sabés ni siquiera cómo crear un proyecto o qué es Angular.
+            Ofrezco clases particulares de Angular adaptadas a tu nivel y necesidades.
+          </p>
+        </div>
+        <div class="servicio">
+          <div class="icono-servicio">🌐</div>
+          <h3 class="titulo-servicio">Desarrollo Web Personalizado</h3>
+          <p class="descripcion-servicio">
+            Si necesitas un sitio web profesional, moderno y adaptado a tus necesidades,
+            puedo ayudarte a desarrollarlo.
           </p>
         </div>
       </div>

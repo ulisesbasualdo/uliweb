@@ -232,7 +232,7 @@ export class ContentWrapperDirective implements AfterViewInit, AfterViewChecked 
       this.renderer.addClass(this.contentInner, 'collapsed');
       this.renderer.setStyle(this.contentInner, 'max-height', height);
       this.renderer.setStyle(this.contentInner, 'overflow', 'hidden');
-      this.renderer.setStyle(this.contentInner, 'border-radius', '30px');
+      this.renderer.setStyle(this.contentInner, 'border-radius', '0px 0px 30px 30px');
       this.renderer.setStyle(this.fadeOverlay, 'display', 'block');
 
       this.renderer.setStyle(this.seeMoreBtn, 'display', 'block');

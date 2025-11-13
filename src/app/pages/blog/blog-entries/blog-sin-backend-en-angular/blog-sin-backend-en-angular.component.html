@@ -1,9 +1,10 @@
 <article
   appContentWrapper
   [entryId]="entryId"
-  (isCollapsed)="onWrapperCollapsed($event)"
+  (isCollapsed)="stepperVisible.set(!$event);"
+  appUliVerticalStepper [visible]="stepperVisible()"
 >
-  <div appUliVerticalStepper [visible]="stepperVisible()" class="blog-entry">
+  <div class="blog-entry">
     <header class="hero-section">
       <img src="blog-img/front-sin-back.jpg" alt="Blog sin backend en Angular" class="cover-image" />
     </header>

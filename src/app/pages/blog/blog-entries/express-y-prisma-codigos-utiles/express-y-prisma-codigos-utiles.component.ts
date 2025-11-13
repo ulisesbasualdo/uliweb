@@ -1,6 +1,9 @@
-﻿import { ChangeDetectionStrategy, Component } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { BlogEntry } from '../../decorators/blog-entry.decorator';
 import { CodeShower } from '../../../../shared/components/code-shower/code-shower';
+import { ContentWrapperDirective } from '../../directives/content-wrapper';
+import { VerticalStepper } from '../../../../shared/directives/vertical-stepper';
+import { BlogService } from '../../services/blog.service';
 
 @BlogEntry({
   category: 'General',
@@ -10,9 +13,14 @@ import { CodeShower } from '../../../../shared/components/code-shower/code-showe
 })
 @Component({
   selector: 'app-express-y-prisma-codigos-utiles',
-  imports: [CodeShower],
+  imports: [CodeShower, ContentWrapperDirective, VerticalStepper],
   template: `
-  <div appVerticalStepper>
+  <div
+  appContentWrapper
+  [entryId]="entryId"
+  (isCollapsed)="stepperVisible.set(!$event);"
+  appUliVerticalStepper [visible]="stepperVisible()"
+  >
     <p>Caso 1: Modificaste las interfaces y los modelos y querés hacer un reinicio completo de la base de datos</p>
     <p class="warning">Precaución: Esto borrará todo lo existente de la base de datos</p>
 
@@ -41,5 +49,13 @@ import { CodeShower } from '../../../../shared/components/code-shower/code-showe
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpressYPrismaCodigosUtilesComponent {
+  private readonly blogService = inject(BlogService);
+  protected stepperVisible = signal(true);
+  protected get entryId(): number {
+    const entry = this.blogService.allEntries().find(
+      e => e.component === ExpressYPrismaCodigosUtilesComponent
+    );
+    return entry?.id ?? 1;
+  }
   protected powerShellRemoveFolder = `Remove-Item -Path .\\prisma\\migrations -Recurse -Force`
 }
