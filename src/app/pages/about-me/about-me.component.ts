@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
         A parte de la programación dicen que hay que tener una vida, en esa vida me encanta tomar clases de danza clásica y bailar tango.
       </p>
       <div class="foto-sobre-mi">
-        <img src="/img/sobre-mi-2.jpg" alt="me" />
+        <img src="img/sobre-mi-2.jpg" alt="me" />
       </div>
       <p class="descripcion-adicional">
         Actualmente trabajo profesionalmente como desarrollador frontend con la tecnología Angular y brindo clases particulares del mismo
