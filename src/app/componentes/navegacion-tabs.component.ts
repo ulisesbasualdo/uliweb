@@ -78,6 +78,13 @@ interface Tab {
       flex: 1;
       text-align: center;
       white-space: nowrap;
+
+
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      user-select: none;
+      outline: none;
     }
 
     .tab:hover {
@@ -166,7 +173,6 @@ export class NavegacionTabsComponent implements AfterViewInit {
     { id: 'blog', nombre: 'Blog' },
     { id: 'servicios', nombre: 'Servicios' },
     { id: 'sobreMi', nombre: 'Sobre Mí' },
-    // { id: 'contacto', nombre: 'Contacto' }
   ];
 
   tabActiva = signal<TipoTab>('blog');
@@ -174,10 +180,7 @@ export class NavegacionTabsComponent implements AfterViewInit {
   tabActivaIndex = signal(0);
 
   ngAfterViewInit() {
-    // Inicializar la posición y el tamaño del indicador
     setTimeout(() => this.actualizarIndicador(), 0);
-
-    // Recalcular cuando cambia el tamaño de la ventana
     window.addEventListener('resize', () => this.actualizarIndicador());
   }
 
@@ -196,7 +199,6 @@ export class NavegacionTabsComponent implements AfterViewInit {
     const tabWidth = tabActiva.offsetWidth;
     const tabLeft = tabActiva.offsetLeft;
 
-    // Actualizar la posición y tamaño del indicador
     this.indicadorTransform.set(`translateX(${tabLeft}px) scaleX(${tabWidth / 100})`);
   }
 }
