@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BlogEntry } from '../../decorators/blog-entry.decorator';
+import { BlogHeader } from '../../components/blog-header';
 
 @BlogEntry({
   category: 'Angular',
@@ -9,12 +10,13 @@ import { BlogEntry } from '../../decorators/blog-entry.decorator';
 })
 @Component({
   selector: 'app-vs-code-emojis',
-  imports: [],
+  imports: [BlogHeader],
   template: `
-    <p>
-      Con las teclas "windows" + "." se abre un popup para insertar emojis
-    </p>
+    <app-blog-header
+      src="blog-img/emojis-vs-code.jpg"
+      alt="Emojis en vs-code" />
+    <p>Con las teclas "windows" + "." se abre un popup para insertar emojis</p>
   `,
-  styles: ``
+  styles: ``,
 })
 export class VsCodeEmojisComponent {}

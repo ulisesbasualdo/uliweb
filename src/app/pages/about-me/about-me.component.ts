@@ -6,15 +6,13 @@ import { Component } from '@angular/core';
   template: `
       <h2 class="titulo-sobre-mi">¡Hola! 👋</h2>
       <p class="descripcion-sobre-mi">
-        Mi nombre es Ulises, soy desarrollador fullstack, me apasiona la programación y sobre todo el desarrollo frontend.
-        A parte de la programación dicen que hay que tener una vida, en esa vida me encanta tomar clases de danza clásica y bailar tango.
+        Mi nombre es Ulises, soy desarrollador fullstack, me apasiona la programación y sobre todo el desarrollo frontend. Bjarne Stroustrup, creador de C++, comparte la siguiente frase: "Construye una vida más allá del ordenador", en esa vida me encanta tomar clases de danza clásica y bailar tango.
       </p>
       <div class="foto-sobre-mi">
         <img src="img/sobre-mi-2.jpg" alt="me" />
       </div>
       <p class="descripcion-adicional">
-        Actualmente trabajo profesionalmente como desarrollador frontend con la tecnología Angular y brindo clases particulares del mismo
-        framework para quienes quieren empezar de cero o ya tienen un conocimiento.
+        Actualmente trabajo profesionalmente como desarrollador frontend con la tecnología Angular, desarrollo sitios web desde cero, creando experiencias de usuario atractivas y funcionales. En este blog comparto mis conocimientos y experiencias en el desarrollo web.
       </p>
       <div class="firma">Uli B.</div>
   `,

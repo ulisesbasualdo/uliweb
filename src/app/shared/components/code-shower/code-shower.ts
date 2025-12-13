@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-code-shower, uli-code-shower',
@@ -13,8 +13,9 @@ export class CodeShower {
   public code = input.required<string>();
   public language = input<string>('javascript');
   protected isCodeCopied = signal<boolean>(false);
+  public headerTitle = input<string | null>(null);
 
-  processedCode: Signal<string> = computed(() => {
+  processedCode = computed<string>(() => {
     const code = this.code().trim();
     const lines = code.split('\n');
     const nonEmptyLines = lines.filter(line => line.trim().length > 0);

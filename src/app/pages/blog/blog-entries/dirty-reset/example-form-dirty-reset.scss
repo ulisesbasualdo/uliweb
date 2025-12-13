@@ -1,0 +1,38 @@
+.example-form {
+  .form {
+    margin: 0;
+  }
+
+  .form-dark {
+    padding: 1rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 0.5rem;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .reset-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-borde);
+    background: var(--color-fondo-terciario);
+    color: var(--color-texto);
+    transition: var(--transicion-base);
+  }
+
+  .reset-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .reset-btn[disabled],
+  .reset-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
