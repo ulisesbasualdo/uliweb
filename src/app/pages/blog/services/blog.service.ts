@@ -12,8 +12,7 @@ export class BlogService {
   private readonly nextId = signal(1);
   private readonly entries = signal<IBlogEntry[]>([]);
 
-  readonly allEntries = computed<IBlogEntry[]>(() => this.entries().sort((a, b) => a.id - b.id));
-
+  readonly allEntries = computed<IBlogEntry[]>(() => [...this.entries()].sort((a, b) => b.date.valueOf() - a.date.valueOf()));
   readonly categories = computed<string[]>(() => <string[]>[
     ...new Set(
       this.entries()
@@ -36,6 +35,13 @@ export class BlogService {
 
   constructor() {
     this.updateEntries();
+    console.table(
+      this.allEntries().map(e => ({
+        title: e.title,
+        date: e.date,
+        ts: e.date.valueOf(),
+      }))
+    );
   }
 
   private updateEntries(): void {
@@ -44,16 +50,23 @@ export class BlogService {
 
     registry.forEach((config, component) => {
       if (config) {
+        // Normalizar fecha por si viene como string
+        const date =
+          config.date instanceof Date
+            ? config.date
+            : new Date(config.date as any);
+
         blogEntries.push({
           id: this.getNextId(),
           category: config.category,
           title: config.title,
           needsWrap: config.needsWrap,
-          date: config.date,
+          date,
           component,
         });
       }
     });
+
     this.entries.set(blogEntries);
   }
 

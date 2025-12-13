@@ -12,9 +12,8 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
         <p>Agrega componentes con el decorador @BlogEntry para verlos aquí.</p>
       </div>
     } @else {
-      @for (category of blogService.categories(); track category) {
         <section class="categoria-seccion">
-          @for (entry of blogService.getEntriesByCategory(category ?? ''); track entry.id) {
+          @for (entry of blogService.allEntries(); track entry.id) {
             <div class="posteo">
               <div class="encabezado-posteo">
                 <img [src]="'img/me2.png'" alt="Perfil" />
@@ -36,7 +35,6 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
           }
         </section>
       }
-    }
   `,
   styles: `
     .debug-info {
@@ -57,7 +55,8 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
       }
     }
 
-    .estado-carga, .estado-error {
+    .estado-carga,
+    .estado-error {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -153,5 +152,4 @@ import { DatePipe, NgComponentOutlet } from '@angular/common';
 })
 export class BlogComponent {
   protected readonly blogService = inject(BlogService);
-
 }

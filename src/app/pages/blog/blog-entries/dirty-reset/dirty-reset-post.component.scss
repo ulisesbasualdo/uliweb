@@ -1,0 +1,41 @@
+
+strong {
+  color: #ff6b9d;
+  font-weight: 600;
+}
+
+code {
+  color: #ff6b9d;
+}
+
+.dirty-reset {
+  .intro {
+    max-width: 70ch;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .demo {
+    max-width: 720px;
+    margin: 0 auto 1rem;
+    padding: 1rem;
+    background-color: var(--color-fondo-secundario);
+    border: 1px solid var(--color-borde);
+    border-radius: 0.5rem;
+    box-shadow: var(--sombra-elemento);
+  }
+
+  .code {
+    margin-top: 0.5rem;
+  }
+
+  .code uli-code-shower {
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
