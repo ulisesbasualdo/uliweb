@@ -1,5 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { CodeHighlightPipe } from './highlight/code-highlight.pipe';
+import { escapeHtml } from './highlight/escape-html';
 
 @Component({
   selector: 'app-code-shower, uli-code-shower',
@@ -7,7 +9,7 @@ import { ChangeDetectionStrategy, Component, computed, input, signal } from '@an
   standalone: true,
   templateUrl: './code-shower.html',
   styleUrl: './code-shower.scss',
-  imports: [TitleCasePipe],
+  imports: [TitleCasePipe, CodeHighlightPipe],
 })
 export class CodeShower {
   public code = input.required<string>();
@@ -33,7 +35,7 @@ export class CodeShower {
       return line.substring(minIndentation);
     });
 
-    return this.escapeHtml(identedLines.join('\n'));
+    return escapeHtml(identedLines.join('\n'));
   });
 
   readonly lineNumbers = computed(() => {
@@ -54,12 +56,4 @@ export class CodeShower {
       });
   }
 
-  private escapeHtml(text: string): string {
-    return text
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;')
-  }
 }
