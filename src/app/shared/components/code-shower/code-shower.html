@@ -17,6 +17,6 @@
       <span class="line-number">{{ lineNumber }}</span>
       }
     </div>
-    <pre class="code-content"><code [innerHTML]="processedCode()"></code></pre>
+    <pre class="code-content"><code [innerHTML]="processedCode() | codeHighlight: language()"></code></pre>
   </div>
 </div>
