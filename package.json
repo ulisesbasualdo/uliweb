@@ -15,25 +15,24 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^20.1.7",
-    "@angular/common": "^20.1.7",
-    "@angular/compiler": "^20.1.7",
-    "@angular/core": "^20.1.7",
-    "@angular/forms": "^20.1.7",
-    "@angular/platform-browser": "^20.1.7",
-    "@angular/platform-browser-dynamic": "^20.1.7",
-    "@angular/router": "^20.1.7",
+    "@angular/animations": "^20.3.15",
+    "@angular/common": "^20.3.15",
+    "@angular/compiler": "^20.3.15",
+    "@angular/core": "^20.3.15",
+    "@angular/forms": "^20.3.15",
+    "@angular/platform-browser": "^20.3.15",
+    "@angular/platform-browser-dynamic": "^20.3.15",
+    "@angular/router": "^20.3.15",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.1.6",
-    "@angular/cli": "^20.1.6",
-    "@angular/compiler-cli": "^20.1.7",
+    "@angular/build": "^20.0.0",
+    "@angular/cli": "20.0.6",
+    "@angular/compiler-cli": "^20.3.15",
     "@types/glob": "^8.1.0",
     "@types/jasmine": "~5.1.0",
-    "angular-cli-ghpages": "^2.0.3",
     "baseline-browser-mapping": "^2.9.7",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
@@ -43,5 +42,9 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.6.2",
     "typescript": "~5.8.3"
+  },
+  "overrides": {
+    "vite": ">=7.1.11",
+    "@modelcontextprotocol/sdk": ">=1.25.1"
   }
 }
