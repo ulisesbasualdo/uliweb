@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
 import { NavegacionTabsComponent } from './componentes/navegacion-tabs.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { MyServicesComponent } from './pages/my-services/my-services.component';
@@ -10,12 +11,15 @@ import { AboutMeComponent } from './pages/about-me/about-me.component';
   standalone: true,
   imports: [
     FormsModule,
+    RouterOutlet,
     NavegacionTabsComponent,
     BlogComponent,
     MyServicesComponent,
     AboutMeComponent,
   ],
   template: `
+    <router-outlet #outlet="outlet" />
+    @if (!outlet.isActivated) {
     <div class="contenedor-principal">
       <section class="portada">
         <div class="contenedor-portada">
@@ -59,6 +63,7 @@ import { AboutMeComponent } from './pages/about-me/about-me.component';
         <app-my-services seccion="servicios" />
       </app-navegacion-tabs>
     </div>
+    }
   `,
   styles: [
     `
